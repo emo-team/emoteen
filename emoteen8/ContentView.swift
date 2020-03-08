@@ -28,59 +28,66 @@ struct JournalView : View
     @ObservedObject var journal: Journal
     
     var body: some View {
-       
-         TextField(journal.Title, text: $journal.Body)
+        
+        TextField(journal.Title, text: $journal.Body)
     }
     
 }
 struct ContentView: View {
     @State private var selection = 0
- 
+    
     var body: some View
     {
         TabView(selection: $selection)
         {
             Text("Meditate")
-
+                
                 .font(.title)
                 .tabItem {
                     VStack {
                         Image(systemName: "heart")
                         Text("Meditate")
                     }
-                }
-                .tag(0)
+            }
+            .tag(0)
             
-                NavigationView
+            NavigationView
                 {
                     List(testJournal) {
-                        journal in
-            
-                        NavigationLink(destination:JournalView(journal: journal))
+                        journal in                        NavigationLink(destination:JournalView(journal: journal))
                         {
                             Text(journal.Title)
                         }
                     }
                     .navigationBarTitle("Activity")
-                
-                
-                }
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "list.dash")
-                        Text("Activity")
-                    }
-                }
-                .tag(1)
-            
-            Text("Profile")
+                    .navigationBarItems(trailing:
+                        
+                        Button(action: {
+                            print("Help tapped!")
+                        }) {
+                            VStack {
+                                Image(systemName: "square.and.pencil")
+                            }
+                        }
+                        
+                    )
+            }
             .font(.title)
             .tabItem {
                 VStack {
-                    Image(systemName: "person")
-                    Text("Profile")
+                    Image(systemName: "list.dash")
+                    Text("Activity")
                 }
+            }
+            .tag(1)
+            
+            Text("Profile")
+                .font(.title)
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Profile")
+                    }
             }
             .tag(2)
         }
