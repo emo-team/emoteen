@@ -6,7 +6,7 @@
 //  Copyright © 2020 Lana. All rights reserved.
 //
 
-import UIKit
+import SwiftUI
 
 class Journal : Identifiable, ObservableObject
 {
@@ -14,6 +14,17 @@ class Journal : Identifiable, ObservableObject
     @Published var Body: String = ""
     var ID: UUID = UUID()
     var Created = Date()
+    
+}
+
+struct JournalView : View
+{
+    @ObservedObject var journal: Journal
+    
+    var body: some View {
+        
+        TextField(journal.Title, text: $journal.Body)
+    }
     
 }
 

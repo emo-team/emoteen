@@ -23,30 +23,40 @@ func getTestJournal() -> [Journal] {
     return [journal, journal2]
 }
 
-struct JournalView : View
+let testMeditation = getTestMeditations()
+
+func getTestMeditations() -> [Meditation]
 {
-    @ObservedObject var journal: Journal
+    let mediation = Meditation()
+    mediation.Title = "Meditation 101"
     
-    var body: some View {
-        
-        TextField(journal.Title, text: $journal.Body)
-    }
+    let mediation2 = Meditation()
+    mediation2.Title = "About Lana Purdy"
+    
+    return [mediation, mediation2]
     
 }
+
 struct ContentView: View {
+    
     @State private var selection = 0
     
     var body: some View
     {
         TabView(selection: $selection)
         {
-            Text("Meditate")
+           
+            ScrollView {
+                HStack {
+                   
+                }
                 
-                .font(.title)
+                }.padding(20)
+                
                 .tabItem {
                     VStack {
                         Image(systemName: "heart")
-                        Text("Meditate")
+                        Text("Meditation")
                     }
             }
             .tag(0)
@@ -54,7 +64,7 @@ struct ContentView: View {
             NavigationView
                 {
                     List(testJournal) {
-                        journal in                        NavigationLink(destination:JournalView(journal: journal))
+                        journal in                        NavigationLink(destination: JournalView(journal: journal))
                         {
                             Text(journal.Title)
                         }
