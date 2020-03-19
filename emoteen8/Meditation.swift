@@ -10,6 +10,7 @@ import SwiftUI
 
 class Meditation :  Identifiable, ObservableObject
 {
+    
     @Published var Title: String = ""
     @Published var Description: String = ""
     @Published var ContentUrl: String = ""

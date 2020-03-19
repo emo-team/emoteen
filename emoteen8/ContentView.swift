@@ -30,10 +30,18 @@ func getTestMeditations() -> [Meditation]
     let mediation = Meditation()
     mediation.Title = "Meditation 101"
     
+
+    
     let mediation2 = Meditation()
     mediation2.Title = "About Lana Purdy"
     
-    return [mediation, mediation2]
+    let mediation3 = Meditation()
+    mediation3.Title = "Meditation 201"
+    
+    let mediation4 = Meditation()
+    mediation4.Title = "Meditation 301"
+    
+    return [mediation, mediation2, mediation3, mediation4]
     
 }
 
@@ -45,7 +53,20 @@ struct ContentView: View {
     {
         TabView(selection: $selection)
         {
-            Text("Meditate")
+           ScrollView
+            {
+            HStack {
+                ForEach(testMeditation)
+                {
+                    item in
+                    VStack {
+                        Image(systemName: "heart")
+                        Text(item.Title).padding(5)
+                    }
+                    
+                }
+            }
+            }.padding(20)
                 
                 .tabItem {
                     VStack {
