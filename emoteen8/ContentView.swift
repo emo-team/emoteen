@@ -45,13 +45,7 @@ struct ContentView: View {
     {
         TabView(selection: $selection)
         {
-           
-            ScrollView {
-                HStack {
-                   
-                }
-                
-                }.padding(20)
+            Text("Meditate")
                 
                 .tabItem {
                     VStack {
