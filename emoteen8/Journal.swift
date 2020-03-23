@@ -24,6 +24,7 @@ struct JournalView : View
     var body: some View {
         
         TextField(journal.Title, text: $journal.Body)
+        
     }
     
 }

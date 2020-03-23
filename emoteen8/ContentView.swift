@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import QGrid
 
 let testJournal = getTestJournal()
 
@@ -27,22 +28,12 @@ let testMeditation = getTestMeditations()
 
 func getTestMeditations() -> [Meditation]
 {
-    let mediation = Meditation()
-    mediation.Title = "Meditation 101"
-    
-
-    
-    let mediation2 = Meditation()
-    mediation2.Title = "About Lana Purdy"
-    
-    let mediation3 = Meditation()
-    mediation3.Title = "Meditation 201"
-    
-    let mediation4 = Meditation()
-    mediation4.Title = "Meditation 301"
-    
-    return [mediation, mediation2, mediation3, mediation4]
-    
+    return [Meditation("Anger", "hand.raised.fill"),
+            Meditation("Stress", "burn"),
+            Meditation("Anxious", "tornado"),
+            Meditation("Blah", "tortoise"),
+            Meditation("Restless", "moon.zzz"),
+            Meditation("About", "person")]
 }
 
 struct ContentView: View {
@@ -53,21 +44,13 @@ struct ContentView: View {
     {
         TabView(selection: $selection)
         {
-           ScrollView
-            {
-            HStack {
-                ForEach(testMeditation)
-                {
-                    item in
-                    VStack {
-                        Image(systemName: "heart")
-                        Text(item.Title).padding(5)
-                    }
-                    
-                }
-            }
-            }.padding(20)
-                
+         QGrid(testMeditation, columns: 1)
+                  {
+                      meditation in
+                      
+                      MeditationView(meditation: meditation)
+                  }
+        .navigationBarTitle("Meditations")
                 .tabItem {
                     VStack {
                         Image(systemName: "heart")

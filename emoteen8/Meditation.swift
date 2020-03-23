@@ -18,6 +18,12 @@ class Meditation :  Identifiable, ObservableObject
     
     var ID: UUID = UUID()
     var Created = Date()
+    
+    init(_ title: String, _ thumbnailUrl: String)
+    {
+        self.Title = title
+        self.ThumbnailUrl = thumbnailUrl
+    }
 
 }
 
@@ -26,8 +32,11 @@ struct MeditationView : View
     @ObservedObject var meditation: Meditation
     
     var body: some View {
-        
-        Text(meditation.Title)
+        HStack {
+            Image(systemName: meditation.ThumbnailUrl).resizable().scaledToFit().frame(width: 100,height:100)
+            Spacer()
+            Text(meditation.Title).font(.largeTitle)
+        }
     }
     
 }
