@@ -44,13 +44,22 @@ struct ContentView: View {
     {
         TabView(selection: $selection)
         {
-         QGrid(testMeditation, columns: 1)
+            NavigationView {
+         QGrid(testMeditation, columns: 2)
                   {
                       meditation in
-                      
-                      MeditationView(meditation: meditation)
+                    
+                    NavigationLink(destination: MeditationDetailView(meditation: meditation))
+                    {
+                        VStack {
+                        MeditationView(meditation: meditation)
+                        Spacer()
+                        }
+                    }
+                    
                   }
-        .navigationBarTitle("Meditations")
+         .navigationBarTitle("Meditations", displayMode: .inline)
+        }
                 .tabItem {
                     VStack {
                         Image(systemName: "heart")
@@ -67,7 +76,7 @@ struct ContentView: View {
                             Text(journal.Title)
                         }
                     }
-                    .navigationBarTitle("Activity")
+                    .navigationBarTitle("Activity", displayMode: .inline)
                     .navigationBarItems(trailing:
                         
                         Button(action: {
