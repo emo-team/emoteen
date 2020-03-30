@@ -61,9 +61,20 @@ struct MeditationDetailView : View {
     var body: some View {
         
         VStack {
-             Image(systemName: meditation.ThumbnailUrl).resizable().scaledToFit().frame(width: 33, height: 33)
-            VideoPlayer(url: self.getUrl(), play: $play).autoReplay(true).colorInvert()
-            Text(self.getUrl().description).font(.largeTitle)
+            VideoPlayer(url: self.getUrl(), play: $play).autoReplay(true).onStateChanged { state in
+                switch state {
+                case .loading:
+                    print("loading")
+                case .playing(let totalDuration):
+                    print(totalDuration)
+                case .paused(let playProgress, let bufferProgress):
+                   print(playProgress)
+                case .error(let error):
+                    print(error.description)
+                }
+            }.onDisappear() {
+                self.play.toggle()
+            }
             Button(self.play ? "Pause" : "Play") {
                 self.play.toggle()
             }

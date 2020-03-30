@@ -28,12 +28,12 @@ let testMeditation = getTestMeditations()
 
 func getTestMeditations() -> [Meditation]
 {
-    return [Meditation("Anger", "hand.raised.fill"),
-            Meditation("Stress", "burn"),
-            Meditation("Anxious", "tornado"),
-            Meditation("Blah", "tortoise"),
-            Meditation("Restless", "moon.zzz"),
-            Meditation("About", "person")]
+    return [Meditation("Anger", "hand.raised.fill", "http://media.zendo.tools/emoteen/test.mov"),
+            Meditation("Stress", "burn", "http://media.zendo.tools/emoteen/test.mov"),
+            Meditation("Anxious", "tornado", "http://media.zendo.tools/emoteen/test.mov"),
+            Meditation("Blah", "tortoise", "http://media.zendo.tools/emoteen/test.mov"),
+            Meditation("Restless", "moon.zzz", "http://media.zendo.tools/emoteen/test.mov"),
+            Meditation("About", "person", "http://media.zendo.tools/emoteen/test.mov")]
 }
 
 struct ContentView: View {
@@ -45,33 +45,36 @@ struct ContentView: View {
         TabView(selection: $selection)
         {
             NavigationView {
-         QGrid(testMeditation, columns: 2)
-                  {
-                      meditation in
+                QGrid(testMeditation, columns: 2)
+                {
+                    meditation in
                     
                     NavigationLink(destination: MeditationDetailView(meditation: meditation))
                     {
                         VStack {
-                        MeditationView(meditation: meditation)
-                        Spacer()
+                            MeditationView(meditation: meditation)
+                            Spacer()
                         }
                     }
                     
-                  }
-         .navigationBarTitle("Meditations", displayMode: .inline)
-        }
-                .tabItem {
-                    VStack {
-                        Image(systemName: "heart")
-                        Text("Meditation")
-                    }
+                }
+                .navigationBarTitle("Meditations", displayMode: .inline)
+            }
+            .tabItem {
+                VStack {
+                    Image(systemName: "heart")
+                    Text("Meditation")
+                }
             }
             .tag(0)
             
             NavigationView
                 {
                     List(testJournal) {
-                        journal in                        NavigationLink(destination: JournalView(journal: journal))
+                        
+                        journal in
+                        
+                        NavigationLink(destination: JournalView(journal: journal))
                         {
                             Text(journal.Title)
                         }
