@@ -48,7 +48,7 @@
 		3F68C03424010442004CC012 = {
 			isa = PBXGroup;
 			children = (
-				3F68C03F24010442004CC012 /* emoteen8 */,
+				3F68C03F24010442004CC012 /* emoteen */,
 				3F68C03E24010442004CC012 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +61,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3F68C03F24010442004CC012 /* emoteen8 */ = {
+		3F68C03F24010442004CC012 /* emoteen */ = {
 			isa = PBXGroup;
 			children = (
 				3F68C04024010442004CC012 /* AppDelegate.swift */,
@@ -74,7 +74,7 @@
 				3F68C05424010965004CC012 /* Journal.swift */,
 				3F8EE2C82421DF100098F13D /* Meditation.swift */,
 			);
-			path = emoteen8;
+			path = emoteen;
 			sourceTree = "<group>";
 		};
 		3F68C04824010443004CC012 /* Preview Content */ = {
