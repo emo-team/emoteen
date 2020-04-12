@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AC83E7E244286E500FF8342 /* Files in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC83E7D244286E500FF8342 /* Files */; };
+		3AC83E802442876200FF8342 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AC83E7F2442876200FF8342 /* Default-568h@2x.png */; };
 		3F68C04124010442004CC012 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F68C04024010442004CC012 /* AppDelegate.swift */; };
 		3F68C04324010442004CC012 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F68C04224010442004CC012 /* SceneDelegate.swift */; };
 		3F68C04524010442004CC012 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F68C04424010442004CC012 /* ContentView.swift */; };
@@ -20,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3AC83E7F2442876200FF8342 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		3F68C03D24010442004CC012 /* emoteen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emoteen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F68C04024010442004CC012 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F68C04224010442004CC012 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AC83E7E244286E500FF8342 /* Files in Frameworks */,
 				3F8EE2CC24286F300098F13D /* QGrid in Frameworks */,
 				3F8EE2CF2429C53B0098F13D /* VideoPlayer in Frameworks */,
 			);
@@ -48,6 +52,7 @@
 		3F68C03424010442004CC012 = {
 			isa = PBXGroup;
 			children = (
+				3AC83E7F2442876200FF8342 /* Default-568h@2x.png */,
 				3F68C03F24010442004CC012 /* emoteen */,
 				3F68C03E24010442004CC012 /* Products */,
 			);
@@ -104,6 +109,7 @@
 			packageProductDependencies = (
 				3F8EE2CB24286F300098F13D /* QGrid */,
 				3F8EE2CE2429C53B0098F13D /* VideoPlayer */,
+				3AC83E7D244286E500FF8342 /* Files */,
 			);
 			productName = emoteen8;
 			productReference = 3F68C03D24010442004CC012 /* emoteen.app */;
@@ -136,6 +142,7 @@
 			packageReferences = (
 				3F8EE2CA24286F300098F13D /* XCRemoteSwiftPackageReference "QGrid" */,
 				3F8EE2CD2429C53B0098F13D /* XCRemoteSwiftPackageReference "VideoPlayer" */,
+				3AC83E7C244286E500FF8342 /* XCRemoteSwiftPackageReference "Files" */,
 			);
 			productRefGroup = 3F68C03E24010442004CC012 /* Products */;
 			projectDirPath = "";
@@ -152,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F68C04D24010443004CC012 /* LaunchScreen.storyboard in Resources */,
+				3AC83E802442876200FF8342 /* Default-568h@2x.png in Resources */,
 				3F68C04A24010443004CC012 /* Preview Assets.xcassets in Resources */,
 				3F68C04724010443004CC012 /* Assets.xcassets in Resources */,
 			);
@@ -306,10 +314,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_ASSET_PATHS = "\"emoteen8/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"emoteen/Preview Content\"";
 				DEVELOPMENT_TEAM = 6N25VDH5A9;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = emoteen8/Info.plist;
+				INFOPLIST_FILE = emoteen/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -327,10 +335,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_ASSET_PATHS = "\"emoteen8/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"emoteen/Preview Content\"";
 				DEVELOPMENT_TEAM = 6N25VDH5A9;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = emoteen8/Info.plist;
+				INFOPLIST_FILE = emoteen/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -366,6 +374,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3AC83E7C244286E500FF8342 /* XCRemoteSwiftPackageReference "Files" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JohnSundell/Files";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.1;
+			};
+		};
 		3F8EE2CA24286F300098F13D /* XCRemoteSwiftPackageReference "QGrid" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Q-Mobile/QGrid";
@@ -385,6 +401,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3AC83E7D244286E500FF8342 /* Files */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AC83E7C244286E500FF8342 /* XCRemoteSwiftPackageReference "Files" */;
+			productName = Files;
+		};
 		3F8EE2CB24286F300098F13D /* QGrid */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F8EE2CA24286F300098F13D /* XCRemoteSwiftPackageReference "QGrid" */;

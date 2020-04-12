@@ -8,21 +8,21 @@
 
 import SwiftUI
 import QGrid
+import Files
 
 let testJournal = getTestJournal()
 
 func getTestJournal() -> [Journal] {
     
     let journal = Journal()
-    journal.Title = "Title1"
+    journal.Title = "Welcome :(:"
     journal.Body = "Body"
     
-    let journal2 = Journal()
-    journal2.Title = "Title2"
-    journal2.Body = "Body"
+    //let journal2 = getJournalsForFiles()
     
-    return [journal, journal2]
+    return [journal]
 }
+
 
 let testMeditation = getTestMeditations()
 
