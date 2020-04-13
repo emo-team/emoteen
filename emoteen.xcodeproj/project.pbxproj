@@ -22,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A18C49324441A60008C66DA /* emoteen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = emoteen.entitlements; sourceTree = "<group>"; };
 		3AC83E7F2442876200FF8342 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		3F68C03D24010442004CC012 /* emoteen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emoteen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F68C04024010442004CC012 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		3F68C03F24010442004CC012 /* emoteen */ = {
 			isa = PBXGroup;
 			children = (
+				3A18C49324441A60008C66DA /* emoteen.entitlements */,
 				3F68C04024010442004CC012 /* AppDelegate.swift */,
 				3F68C04224010442004CC012 /* SceneDelegate.swift */,
 				3F68C04424010442004CC012 /* ContentView.swift */,
@@ -312,8 +314,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = emoteen/emoteen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"emoteen/Preview Content\"";
 				DEVELOPMENT_TEAM = 6N25VDH5A9;
 				ENABLE_PREVIEWS = YES;
@@ -333,8 +336,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = emoteen/emoteen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"emoteen/Preview Content\"";
 				DEVELOPMENT_TEAM = 6N25VDH5A9;
 				ENABLE_PREVIEWS = YES;
