@@ -14,9 +14,9 @@ let testJournal = getTestJournal()
 
 func getTestJournal() -> [Journal] {
     
-    let journal = Journal()
-    journal.Title = "Welcome :(:"
-    journal.Body = """
+   
+    var Title = "Welcome :(:"
+    var Body = """
     # emoteen
     teens meditate on emotive states
 
@@ -27,6 +27,8 @@ func getTestJournal() -> [Journal] {
 
     join us :): or not.
     """
+    
+     let journal = Journal(Title, Body)
     
     //let journal2 = getJournalsForFiles()
     
@@ -112,15 +114,17 @@ struct ContentView: View {
                     }
                     .navigationBarTitle("Activity", displayMode: .inline)
                     .navigationBarItems(trailing:
-                        
+                        //NavigationLink {
                         Button(action: {
                             print("Help tapped!")
+                    
+                            
                         }) {
                             VStack {
                                 Image(systemName: "square.and.pencil")
                             }
                         }
-                        
+                            //}
                     )
             }
             .font(.title)
