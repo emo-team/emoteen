@@ -32,11 +32,39 @@ func getTestJournal() -> [Journal] {
     
     //let journal2 = getJournalsForFiles()
     
-    let file = getDocumentsDirectory().appendingPathComponent("welcome.emo")
     
-    try! journal.Body.write(to: file, atomically: true, encoding: .utf8)
-    let input = try! String(contentsOf: file)
-    print(input)
+    var containerUrl: URL? {
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
+    }
+    
+    // check for container existence
+    if let url = containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+        do {
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
+    //let file = getDocumentsDirectory().appendingPathComponent("welcome.emo")
+    let file = containerUrl!.appendingPathComponent("welcome.emo")
+    
+    print(file.description)
+    
+    
+    
+    file.startAccessingSecurityScopedResource()
+    
+   // if(file.startAccessingSecurityScopedResource()) {
+    
+        try! journal.Body.write(to: file, atomically: true, encoding: .utf8)
+        let input = try! String(contentsOf: file)
+        print(input)
+        
+     //   file.stopAccessingSecurityScopedResource()
+    //}
     
     print(try! getDocuments())
     
