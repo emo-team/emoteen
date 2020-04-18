@@ -32,6 +32,16 @@ class Meditation :  Identifiable, ObservableObject
         self.ThumbnailUrl = thumbnailUrl
         self.ContentUrl = contentUrl
     }
+    
+    static func load() -> [Meditation]
+    {
+        return [Meditation("Anger", "hand.raised.fill", "http://media.zendo.tools/emoteen/anger.m4v"),
+                Meditation("Stress", "burn", "http://media.zendo.tools/emoteen/stress.m4v"),
+                Meditation("Anxious", "tornado", "http://media.zendo.tools/emoteen/anxious.m4v"),
+                Meditation("Blah", "tortoise", "http://media.zendo.tools/emoteen/blah.m4v"),
+                Meditation("Restless", "moon.zzz", "http://media.zendo.tools/emoteen/restless.m4v"),
+                Meditation("About", "person", "http://media.zendo.tools/emoteen/about.m4v")]
+    }
 
 }
 

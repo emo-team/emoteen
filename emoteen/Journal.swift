@@ -23,6 +23,56 @@ class Journal : Identifiable, ObservableObject
         self.Body = body
     }
     
+    static var containerUrl: URL?
+    {
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)!//?.appendingPathComponent("Documents")
+    }
+    
+    func save()
+    {
+        if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+            do {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+        let file = Self.containerUrl!.appendingPathComponent("\(self.Title).emo")
+        
+        try! self.Body.write(to: file, atomically: true, encoding: .utf8)
+    }
+    
+    static func load() -> [Journal]
+    {
+    
+       // let files = try! FileManager.default.contentsOfDirectory(atPath: Self.containerUrl!.absoluteString)
+    
+       // for file in files
+        //{
+          //  print(file)
+        //}
+        
+        let Title = "Welcome :(:"
+                   let Body = """
+                   # emoteen
+                   teens meditate on emotive states
+
+                   ## ios app
+                   ### mediations: ig stories / snaps of useful meditations. by teens, for teens, for free.
+                   ### journals: your stories. private to you. or not.
+                   ### mirrors: your stats, your friends, your teachers,
+
+                   join us :): or not.
+                   """
+                   
+                   let journal = Journal(Title, Body)
+                   
+                   return [journal]
+        
+    }
+    
 }
 
 struct JournalView : View
@@ -30,12 +80,10 @@ struct JournalView : View
     @ObservedObject var journal: Journal
     
     var body: some View {
-        //ScrollView {
+
             VStack {
                 TextView(text: $journal.Body)
             }
-        //}
-        
     }
     
 }

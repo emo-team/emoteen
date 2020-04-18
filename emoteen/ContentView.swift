@@ -10,93 +10,6 @@ import SwiftUI
 import QGrid
 import Files
 
-let testJournal = getTestJournal()
-
-func getTestJournal() -> [Journal] {
-    
-   
-    var Title = "Welcome :(:"
-    var Body = """
-    # emoteen
-    teens meditate on emotive states
-
-    ## ios app
-    ### mediations: ig stories / snaps of useful meditations. by teens, for teens, for free.
-    ### journals: your stories. private to you. or not.
-    ### mirrors: your stats, your friends, your teachers,
-
-    join us :): or not.
-    """
-    
-     let journal = Journal(Title, Body)
-    
-    //let journal2 = getJournalsForFiles()
-    
-    
-    var containerUrl: URL? {
-        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-    }
-    
-    // check for container existence
-    if let url = containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
-        do {
-            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-        }
-        catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    
-    //let file = getDocumentsDirectory().appendingPathComponent("welcome.emo")
-    let file = containerUrl!.appendingPathComponent("welcome.emo")
-    
-    print(file.description)
-    
-    
-    
-    file.startAccessingSecurityScopedResource()
-    
-   // if(file.startAccessingSecurityScopedResource()) {
-    
-        try! journal.Body.write(to: file, atomically: true, encoding: .utf8)
-        let input = try! String(contentsOf: file)
-        print(input)
-        
-     //   file.stopAccessingSecurityScopedResource()
-    //}
-    
-    print(try! getDocuments())
-    
-    return [journal]
-}
-
-
-func getDocuments() throws -> [String]
-{
-    return try! FileManager.default.contentsOfDirectory(atPath: getDocumentsDirectory().path)
-}
-
-func getDocumentsDirectory() -> URL {
-    // find all possible documents directories for this user
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-
-    // just send back the first one, which ought to be the only one
-    return paths[0]
-}
-
-let testMeditation = getTestMeditations()
-
-func getTestMeditations() -> [Meditation]
-{
-    return [Meditation("Anger", "hand.raised.fill", "http://media.zendo.tools/emoteen/anger.m4v"),
-            Meditation("Stress", "burn", "http://media.zendo.tools/emoteen/stress.m4v"),
-            Meditation("Anxious", "tornado", "http://media.zendo.tools/emoteen/anxious.m4v"),
-            Meditation("Blah", "tortoise", "http://media.zendo.tools/emoteen/blah.m4v"),
-            Meditation("Restless", "moon.zzz", "http://media.zendo.tools/emoteen/restless.m4v"),
-            Meditation("About", "person", "http://media.zendo.tools/emoteen/about.m4v")]
-}
-
 struct ContentView: View {
     
     @State private var selection = 0
@@ -106,7 +19,7 @@ struct ContentView: View {
         TabView(selection: $selection)
         {
             NavigationView {
-                QGrid(testMeditation, columns: 2)
+                QGrid(Meditation.load(), columns: 2)
                 {
                     meditation in
                     
@@ -131,7 +44,7 @@ struct ContentView: View {
             
             NavigationView
                 {
-                    List(testJournal) {
+                    List(Journal.load()) {
                         
                         journal in
                         
@@ -142,18 +55,10 @@ struct ContentView: View {
                     }
                     .navigationBarTitle("Activity", displayMode: .inline)
                     .navigationBarItems(trailing:
-                        //NavigationLink {
-                        Button(action: {
-                            print("Help tapped!")
-                    
-                            
-                        }) {
-                            VStack {
-                                Image(systemName: "square.and.pencil")
-                            }
-                        }
-                            //}
-                    )
+                        NavigationLink(destination: JournalView(journal: Journal("","")))
+                        {
+                            Image(systemName: "square.and.pencil")
+                    })
             }
             .font(.title)
             .tabItem {
