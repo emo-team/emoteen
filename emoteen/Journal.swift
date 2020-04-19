@@ -25,7 +25,7 @@ class Journal : Identifiable, ObservableObject
     
     static var containerUrl: URL?
     {
-        return FileManager.default.url(forUbiquityContainerIdentifier: nil)!//?.appendingPathComponent("Documents")
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
     }
     
     func save()
@@ -47,12 +47,12 @@ class Journal : Identifiable, ObservableObject
     static func load() -> [Journal]
     {
     
-       // let files = try! FileManager.default.contentsOfDirectory(atPath: Self.containerUrl!.absoluteString)
+       let files = try! FileManager.default.contentsOfDirectory(atPath: Self.containerUrl!.path)
     
-       // for file in files
-        //{
-          //  print(file)
-        //}
+       for file in files
+       {
+         print(file)
+        }
         
         let Title = "Welcome :(:"
                    let Body = """

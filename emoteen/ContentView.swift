@@ -2,8 +2,8 @@
 //  ContentView.swift
 //  emoteen8
 //
-//  Created by Lana on 2/21/20.
-//  Copyright © 2020 Lana. All rights reserved.
+//  Created by Lana Purdy on 2/21/20.
+//  Copyright © 2020 Lana Purdy. All rights reserved.
 //
 
 import SwiftUI
