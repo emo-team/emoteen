@@ -23,6 +23,18 @@ class Journal : Identifiable, ObservableObject
         self.Body = body
     }
     
+    init(_ filename: String)
+    {
+        self.Title = filename
+        
+        let file = Self.containerUrl!.appendingPathComponent(filename)
+        
+        let data = FileManager.default.contents(atPath: file.path)
+        
+        self.Body = String(data: data!, encoding: .utf8) ?? ""
+        
+    }
+    
     static var containerUrl: URL?
     {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
@@ -46,18 +58,20 @@ class Journal : Identifiable, ObservableObject
     
     static func load() -> [Journal]
     {
+        var journals = [Journal]()
+        let files = try! FileManager.default.contentsOfDirectory(atPath: Self.containerUrl!.path)
     
-       let files = try! FileManager.default.contentsOfDirectory(atPath: Self.containerUrl!.path)
-    
-       for file in files
-       {
-         print(file)
+        for file in files
+        {
+            journals.append(Journal(file))
         }
         
-        let Title = "Welcome :(:"
-                   let Body = """
-                   # emoteen
-                   teens meditate on emotive states
+        if journals.count == 0
+        {
+            let Title = "Welcome :(:"
+            let Body =
+            """
+                    # emoteen: teens meditate on emotive states
 
                    ## ios app
                    ### mediations: ig stories / snaps of useful meditations. by teens, for teens, for free.
@@ -67,10 +81,13 @@ class Journal : Identifiable, ObservableObject
                    join us :): or not.
                    """
                    
-                   let journal = Journal(Title, Body)
-                   
-                   return [journal]
+            let journal = Journal(Title, Body)
+            
+            journals.append(journal)
+            
+        }
         
+        return journals
     }
     
 }
