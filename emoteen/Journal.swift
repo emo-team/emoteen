@@ -9,6 +9,18 @@
 import SwiftUI
 import UIKit
 
+extension Date
+{
+    var emoDate : String
+    {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy.MM.dd'@'HH.mm"
+            return formatter.string(from: self)
+        }
+    }
+}
+
 class Journal : Identifiable, ObservableObject
 {
 
@@ -35,6 +47,10 @@ class Journal : Identifiable, ObservableObject
         
     }
     
+    var description : String {
+        return "\(Title)\r\n\(Body)"
+    }
+    
     static var containerUrl: URL?
     {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
@@ -51,7 +67,9 @@ class Journal : Identifiable, ObservableObject
             }
         }
         
-        let file = Self.containerUrl!.appendingPathComponent("\(self.Title).emo")
+        let file = Self.containerUrl!.appendingPathComponent("\(self.Title)")
+        
+        print(self.description)
         
         try! self.Body.write(to: file, atomically: true, encoding: .utf8)
     }
@@ -63,15 +81,18 @@ class Journal : Identifiable, ObservableObject
     
         for file in files
         {
-            journals.append(Journal(file))
+            if(file.contains(".emo") && !file.starts(with: "."))
+            {
+                journals.append(Journal(file))
+            }
         }
         
         if journals.count == 0
         {
-            let Title = "Welcome :(:"
+            let Title = "Welcome.emo"
             let Body =
             """
-                    # emoteen: teens meditate on emotive states
+                   # emoteen: teens meditate on emotive states
 
                    ## ios app
                    ### mediations: ig stories / snaps of useful meditations. by teens, for teens, for free.
@@ -96,16 +117,27 @@ struct JournalView : View
 {
     @ObservedObject var journal: Journal
     
-    var body: some View {
-
-            VStack {
-                TextView(text: $journal.Body)
-            }
+    init(_ journal: Journal)
+    {
+        self.journal = journal
     }
     
+    var body: some View
+    {
+        VStack<TextView>
+        {
+            TextView(text: $journal.Body)
+
+        }.onDisappear()
+        {
+            self.journal.save()
+        }.navigationBarTitle(journal.Title)
+    }
 }
 
-struct TextView: UIViewRepresentable {
+struct TextView: UIViewRepresentable
+{
+    
     @Binding var text: String
 
     func makeUIView(context: Context) -> UITextView {
@@ -116,6 +148,8 @@ struct TextView: UIViewRepresentable {
             view.contentInset = UIEdgeInsets(top: 5,
                 left: 10, bottom: 5, right: 5)
             view.isHidden = false
+            view.delegate = context.coordinator
+            view.font = UIFont.systemFont(ofSize: 21, weight: UIFont.Weight.medium)
             return view
     }
 
@@ -155,6 +189,6 @@ struct Journal_Previews: PreviewProvider {
     """
     
     static var previews: some View {
-        JournalView(journal: Journal("#emoteen", body))
+        JournalView(Journal("#emoteen", body))
     }
 }

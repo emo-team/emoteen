@@ -48,14 +48,14 @@ struct ContentView: View {
                         
                         journal in
                         
-                        NavigationLink(destination: JournalView(journal: journal))
+                        NavigationLink(destination: JournalView(journal))
                         {
                             Text(journal.Title)
                         }
                     }
                     .navigationBarTitle("Activity", displayMode: .inline)
                     .navigationBarItems(trailing:
-                        NavigationLink(destination: JournalView(journal: Journal("","")))
+                        NavigationLink(destination: JournalView(Journal(Date().emoDate + ".emo","")))
                         {
                             Image(systemName: "square.and.pencil")
                     })
