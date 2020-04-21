@@ -131,7 +131,8 @@ struct JournalView : View
         }.onDisappear()
         {
             self.journal.save()
-        }.navigationBarTitle(journal.Title)
+            }.navigationBarTitle(journal.Title)
+        
     }
 }
 
