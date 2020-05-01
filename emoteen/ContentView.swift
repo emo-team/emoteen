@@ -10,35 +10,6 @@ import SwiftUI
 import QGrid
 import Files
 
-struct ActivityNavigationView: View
-{
-    
-    var body: some View
-    {
-        NavigationView
-            {
-                List(Journal.load()) {
-                    
-                    journal in
-                    
-                    NavigationLink(destination: JournalView(journal))
-                    {
-                        Text(journal.Title)
-                    }
-                }
-                .navigationBarTitle("Activity", displayMode: .inline)
-                .navigationBarItems(trailing:
-                    NavigationLink(destination: JournalView(Journal(Date().emoDate + ".emo","")))
-                    {
-                        Image(systemName: "square.and.pencil")
-                })
-        }
-        .font(.title)
-    }
-    
-
-}
-
 struct ContentView: View {
     
     @State private var selection = 0
@@ -71,21 +42,21 @@ struct ContentView: View {
             }
             .tag(0)
             
-            ActivityNavigationView()
+            JournalNavigationView(journals: Journal.load())
             .tabItem {
                 VStack {
                     Image(systemName: "list.dash")
-                    Text("Activity")
+                    Text("Journal")
                 }
             }
             .tag(1)
             
-            Text("Profile")
+            Text("Activity")
                 .font(.title)
                 .tabItem {
                     VStack {
                         Image(systemName: "person")
-                        Text("Profile")
+                        Text("Activity")
                     }
             }
             .tag(2)

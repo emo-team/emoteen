@@ -21,13 +21,26 @@ extension Date
     }
 }
 
-class Journal : Identifiable, ObservableObject
+class Journal : Identifiable, ObservableObject, Hashable, Comparable
 {
 
     @Published var Title: String = ""
     @Published var Body: String = ""
     var ID: UUID = UUID()
     var Created = Date()
+
+    static func < (lhs: Journal, rhs: Journal) -> Bool {
+        return lhs.Title < rhs.Title
+    }
+    
+    static func == (lhs: Journal, rhs: Journal) -> Bool {
+        return lhs.Title == rhs.Title
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.Title)
+    }
+    
     
     init(_ title: String, _ body: String )
     {
@@ -42,6 +55,10 @@ class Journal : Identifiable, ObservableObject
         let file = Self.containerUrl!.appendingPathComponent(filename)
         
         let data = FileManager.default.contents(atPath: file.path)
+        
+        let info = try! FileManager.default.attributesOfFileSystem(forPath: file.path)
+        
+        //self.Created = info[.creationDate] as! Date
         
         self.Body = String(data: data!, encoding: .utf8) ?? ""
         
@@ -111,6 +128,39 @@ class Journal : Identifiable, ObservableObject
         return journals
     }
     
+}
+
+struct JournalNavigationView: View
+{
+    @State var journals : [Journal]
+    
+    var body: some View
+    {
+        NavigationView
+            {
+                List(journals, id:\.self) {
+                    
+                    journal in
+                    
+                    NavigationLink(destination: JournalView(journal))
+                    {
+                        Text(journal.Title)
+                    }
+                }
+                .navigationBarTitle("Journals", displayMode: .inline)
+                .navigationBarItems(trailing:
+                    NavigationLink(destination: JournalView(Journal(Date().emoDate + ".emo","")))
+                    {
+                        Image(systemName: "square.and.pencil")
+                })
+                .onAppear(perform: {
+                    self.journals = Journal.load()
+                })
+        }
+        .font(.title)
+    }
+    
+
 }
 
 struct JournalView : View
