@@ -125,7 +125,7 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
             
         }
         
-        return journals.sorted()
+        return journals.sorted(by: >)
     }
     
 }
