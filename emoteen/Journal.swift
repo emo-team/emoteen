@@ -125,7 +125,7 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
             
         }
         
-        return journals
+        return journals.sorted()
     }
     
 }
@@ -181,7 +181,9 @@ struct JournalView : View
         }.onDisappear()
         {
             self.journal.save()
-            }.navigationBarTitle(journal.Title)
+        }.navigationBarTitle(journal.Title).onTapGesture(perform: {
+        
+        })
         
     }
 }
