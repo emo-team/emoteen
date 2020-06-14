@@ -19,6 +19,8 @@
 		3F8EE2C92421DF100098F13D /* Meditation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EE2C82421DF100098F13D /* Meditation.swift */; };
 		3F8EE2CC24286F300098F13D /* QGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 3F8EE2CB24286F300098F13D /* QGrid */; };
 		3F8EE2CF2429C53B0098F13D /* VideoPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = 3F8EE2CE2429C53B0098F13D /* VideoPlayer */; };
+		BE7BF3D82495E6EB00181221 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7BF3D72495E6EB00181221 /* Activity.swift */; };
+		BE7BF3DB2495E8BB00181221 /* CalendarKit in Frameworks */ = {isa = PBXBuildFile; productRef = BE7BF3DA2495E8BB00181221 /* CalendarKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,7 @@
 		3F68C04E24010443004CC012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F68C05424010965004CC012 /* Journal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journal.swift; sourceTree = "<group>"; };
 		3F8EE2C82421DF100098F13D /* Meditation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meditation.swift; sourceTree = "<group>"; };
+		BE7BF3D72495E6EB00181221 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AC83E7E244286E500FF8342 /* Files in Frameworks */,
+				BE7BF3DB2495E8BB00181221 /* CalendarKit in Frameworks */,
 				3F8EE2CC24286F300098F13D /* QGrid in Frameworks */,
 				3F8EE2CF2429C53B0098F13D /* VideoPlayer in Frameworks */,
 			);
@@ -80,6 +84,7 @@
 				3F68C04824010443004CC012 /* Preview Content */,
 				3F68C05424010965004CC012 /* Journal.swift */,
 				3F8EE2C82421DF100098F13D /* Meditation.swift */,
+				BE7BF3D72495E6EB00181221 /* Activity.swift */,
 			);
 			path = emoteen;
 			sourceTree = "<group>";
@@ -112,6 +117,7 @@
 				3F8EE2CB24286F300098F13D /* QGrid */,
 				3F8EE2CE2429C53B0098F13D /* VideoPlayer */,
 				3AC83E7D244286E500FF8342 /* Files */,
+				BE7BF3DA2495E8BB00181221 /* CalendarKit */,
 			);
 			productName = emoteen8;
 			productReference = 3F68C03D24010442004CC012 /* emoteen.app */;
@@ -145,6 +151,7 @@
 				3F8EE2CA24286F300098F13D /* XCRemoteSwiftPackageReference "QGrid" */,
 				3F8EE2CD2429C53B0098F13D /* XCRemoteSwiftPackageReference "VideoPlayer" */,
 				3AC83E7C244286E500FF8342 /* XCRemoteSwiftPackageReference "Files" */,
+				BE7BF3D92495E8BB00181221 /* XCRemoteSwiftPackageReference "CalendarKit" */,
 			);
 			productRefGroup = 3F68C03E24010442004CC012 /* Products */;
 			projectDirPath = "";
@@ -174,6 +181,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE7BF3D82495E6EB00181221 /* Activity.swift in Sources */,
 				3F8EE2C92421DF100098F13D /* Meditation.swift in Sources */,
 				3F68C04124010442004CC012 /* AppDelegate.swift in Sources */,
 				3F68C04324010442004CC012 /* SceneDelegate.swift in Sources */,
@@ -402,6 +410,14 @@
 				minimumVersion = 1.1.2;
 			};
 		};
+		BE7BF3D92495E8BB00181221 /* XCRemoteSwiftPackageReference "CalendarKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/richardtop/CalendarKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -419,6 +435,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F8EE2CD2429C53B0098F13D /* XCRemoteSwiftPackageReference "VideoPlayer" */;
 			productName = VideoPlayer;
+		};
+		BE7BF3DA2495E8BB00181221 /* CalendarKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE7BF3D92495E8BB00181221 /* XCRemoteSwiftPackageReference "CalendarKit" */;
+			productName = CalendarKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

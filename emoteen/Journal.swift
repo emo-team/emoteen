@@ -94,16 +94,20 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
     static func load() -> [Journal]
     {
         var journals = [Journal]()
-        let files = try! FileManager.default.contentsOfDirectory(atPath: Self.containerUrl!.path)
-    
-        for file in files
-        {
-            if(file.contains(".emo") && !file.starts(with: "."))
-            {
-                journals.append(Journal(file))
-            }
-        }
         
+        if let url = Self.containerUrl
+        {
+                let files = try! FileManager.default.contentsOfDirectory(atPath: url.path)
+            
+                for file in files
+                {
+                    if(file.contains(".emo") && !file.starts(with: "."))
+                    {
+                        journals.append(Journal(file))
+                    }
+                }
+        }
+
         if journals.count == 0
         {
             let Title = "Welcome.emo"
