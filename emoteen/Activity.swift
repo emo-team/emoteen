@@ -8,14 +8,17 @@
 
 import SwiftUI
 
-struct Activity: View {
+struct ActivityView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Image(systemName: "person")
+            Text("Activity")
+        }
     }
 }
 
 struct Activity_Previews: PreviewProvider {
     static var previews: some View {
-        Activity()
+        ActivityView()
     }
 }

@@ -84,6 +84,7 @@ struct MeditationDetailView : View {
                 }
             }.onDisappear() {
                 self.play.toggle()
+                self.save()
             }
             Button(self.play ? "Pause" : "Play") {
                 self.play.toggle()
@@ -91,6 +92,16 @@ struct MeditationDetailView : View {
         }
         
     }
+    
+    func save()
+    {
+        if FileManager.default.ubiquityIdentityToken != nil
+        {
+            print("save the meditation here.")
+        }
+        
+    }
+    
 }
 
 struct Meditation_Preview: PreviewProvider {
