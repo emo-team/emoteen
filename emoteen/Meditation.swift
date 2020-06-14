@@ -9,7 +9,7 @@
 import SwiftUI
 import VideoPlayer
 
-class Meditation :  Identifiable, ObservableObject
+class Meditation :  Identifiable, ObservableObject 
 {
     
     @Published var Title: String = ""
@@ -18,7 +18,9 @@ class Meditation :  Identifiable, ObservableObject
     @Published var ThumbnailUrl: String = ""
     
     var ID: UUID = UUID()
-    var Created = Date()
+    var Started = Date()
+    var Ended = Date()
+    
     
     init(_ title: String, _ thumbnailUrl: String)
     {
@@ -42,6 +44,34 @@ class Meditation :  Identifiable, ObservableObject
                 Meditation("Restless", "moon.zzz", "http://media.zendo.tools/emoteen/restless.m4v"),
                 Meditation("About", "person", "http://media.zendo.tools/emoteen/about.m4v")]
     }
+    
+    var description : String {
+        return "\(Title)\r\n\(Started)\r\n\(Ended)"
+    }
+    
+    
+    static var containerUrl: URL?
+      {
+          return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
+      }
+      
+      func save()
+      {
+        self.Ended = Date()
+        
+          if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+              do {
+                  try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+              }
+              catch {
+                  print(error.localizedDescription)
+              }
+          }
+          
+        let file = Self.containerUrl!.appendingPathComponent("\(self.Started.emoDate)" + ".emo")
+          
+          try! self.description.write(to: file, atomically: true, encoding: .utf8)
+      }
 
 }
 
@@ -98,6 +128,8 @@ struct MeditationDetailView : View {
         if FileManager.default.ubiquityIdentityToken != nil
         {
             print("save the meditation here.")
+            
+            meditation.save()
         }
         
     }

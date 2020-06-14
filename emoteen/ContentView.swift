@@ -51,7 +51,7 @@ struct ContentView: View {
             }
             .tag(1)
             
-            ActivityView()
+            ActivityView(records: EmoRecord.load())
                 .font(.title)
                 .tabItem {
                     VStack {

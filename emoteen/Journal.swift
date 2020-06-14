@@ -9,17 +9,7 @@
 import SwiftUI
 import UIKit
 
-extension Date
-{
-    var emoDate : String
-    {
-        get {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy.MM.dd'@'HH.mm"
-            return formatter.string(from: self)
-        }
-    }
-}
+
 
 class Journal : Identifiable, ObservableObject, Hashable, Comparable
 {

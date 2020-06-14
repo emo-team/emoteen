@@ -8,15 +8,18 @@
 
 import SwiftUI
 import CalendarKit
+import SwiftyJSON
 
 struct ActivityView: View {
+    
+    var records : [EmoRecord]
+    
     var body: some View {
-        
         
         NavigationView
             {
                 VStack {
-                    CalendarController()
+                    CalendarController(records: records)
                 }
                 .navigationBarTitle("Activity", displayMode: .inline)
                 }
@@ -29,39 +32,71 @@ struct ActivityView: View {
 
 struct Activity_Previews: PreviewProvider {
     static var previews: some View {
-        ActivityView()
+        //ActivityView(records: EmoRecords.)
+        VStack { Spacer() }
     }
 }
+
+
 
 
 final class CalendarController: UIViewControllerRepresentable, EventDataSource {
     
     typealias UIViewControllerType = DayViewController
     
+    public var records : [EmoRecord] = []
+    
+    init(records: [EmoRecord])
+    {
+        self.records = records
+    }
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
     
     func makeUIViewController(context: Context) -> DayViewController {
-        let imagePickerController = DayViewController()
-        imagePickerController.dataSource = self
-        return imagePickerController
+        let dayViewController = DayViewController()
+        dayViewController.dataSource = self
+        return dayViewController
     }
     
     func eventsForDate(_ date: Date)  -> [EventDescriptor] {
-        var events = [Event]()
-        return events
+        return getMeditationDates() + getJournalDates()
     }
         
     func updateUIViewController(_ uiViewController: DayViewController, context: Context) {
         
     }
     
+    func getMeditationDates() -> [EventDescriptor] {
+        
+        var events = [Event]()
+        
+        let event = Event()
+        
+        events.append(event)
+        
+        return events
+    }
+
+    func getJournalDates() -> [EventDescriptor] {
+        
+        var events = [Event]()
+        
+        let event = Event()
+        
+        events.append(event)
+        
+        return events
+    }
+
+    
     class Coordinator: NSObject {
         var parent: CalendarController
         
-        init(_ imagePickerController: CalendarController) {
-            self.parent = imagePickerController
+        init(_ calendarController: CalendarController) {
+            self.parent = calendarController
         }
         
         
