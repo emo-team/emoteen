@@ -12,8 +12,7 @@ import CalendarKit
 struct ActivityView: View {
     var body: some View {
         VStack {
-            Image(systemName: "person")
-            Text("Activity")
+            CalendarController()
         }
     }
 }
@@ -25,7 +24,7 @@ struct Activity_Previews: PreviewProvider {
 }
 
 
-final class  CalendarController: UIViewControllerRepresentable, EventDataSource {
+final class CalendarController: UIViewControllerRepresentable, EventDataSource {
     
     typealias UIViewControllerType = DayViewController
     
