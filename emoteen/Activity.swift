@@ -11,9 +11,19 @@ import CalendarKit
 
 struct ActivityView: View {
     var body: some View {
-        VStack {
-            CalendarController()
-        }
+        
+        
+        NavigationView
+            {
+                VStack {
+                    CalendarController()
+                }
+                .navigationBarTitle("Activity", displayMode: .inline)
+                }
+                
+        .font(.title)
+                
+
     }
 }
 
