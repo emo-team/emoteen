@@ -11,7 +11,6 @@ import VideoPlayer
 
 class Meditation :  Identifiable, ObservableObject 
 {
-    
     @Published var Title: String = ""
     @Published var Description: String = ""
     @Published var ContentUrl: String = ""
@@ -20,7 +19,6 @@ class Meditation :  Identifiable, ObservableObject
     var ID: UUID = UUID()
     var Started = Date()
     var Ended = Date()
-    
     
     init(_ title: String, _ thumbnailUrl: String)
     {
@@ -49,17 +47,16 @@ class Meditation :  Identifiable, ObservableObject
         return "\(Title)\r\n\(Started)\r\n\(Ended)"
     }
     
-    
     static var containerUrl: URL?
-      {
+    {
           return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-      }
+    }
       
-      func save()
-      {
+    func save()
+    {
         self.Ended = Date()
         
-          if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+        if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
               do {
                   try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
               }
@@ -70,9 +67,8 @@ class Meditation :  Identifiable, ObservableObject
           
         let file = Self.containerUrl!.appendingPathComponent("\(self.Started.emoDate)" + ".emo")
           
-          try! self.description.write(to: file, atomically: true, encoding: .utf8)
-      }
-
+        try! self.description.write(to: file, atomically: true, encoding: .utf8)
+    }
 }
 
 struct MeditationView : View

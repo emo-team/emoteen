@@ -16,8 +16,15 @@ extension Date
     {
         get {
             let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy.MM.dd'@'HH.mm"
+            formatter.dateFormat = Self.emoFormat
             return formatter.string(from: self)
+        }
+    }
+    
+    static var emoFormat : String
+    {
+        get {
+            return "yyyy.MM.dd'@'HH.mm"
         }
     }
 }
@@ -32,16 +39,74 @@ public class EmoRecord : Codable
     
     public init(_ json: JSON)  {
         
-        if let title = json["title"].string {
+        if let title = json["title"].string
+        {
             self.title = title
+        }
+        
+        if let type = json["type"].string
+        {
+            self.type = type
+        }
+        
+        if let start = json["start"].string
+        {
+            self.start = Date(dateString: start, format: Date.emoFormat)
+        }
+        
+        if let end = json["end"].string
+        {
+            self.end = Date(dateString: end, format: Date.emoFormat)
+        }
+        
+        if let body = json["body"].string
+        {
+            self.body = body
         }
         
     }
     
+    public init(_ title : String, _ type : String, _ body : String)
+    {
+        self.title = title
+        self.type = type
+        self.body = body
+    }
+    
+    var description : String {
+        return "\(title)\r\n\(start)\r\n\(end)"
+    }
+    
     static var containerUrl: URL?
-      {
+    {
           return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-      }
+    }
+      
+    func save()
+    {
+        self.end = Date()
+        
+        if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+              do {
+                  try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+              }
+              catch {
+                  print(error.localizedDescription)
+              }
+          }
+        do
+        {
+            let file = Self.containerUrl!.appendingPathComponent("\(self.start.emoDate)" + ".emo")
+            
+            let json = JSON(self)
+            
+            try json.rawString()!.write(to: file, atomically: true, encoding: .utf8)
+        
+        } catch {
+            
+        }
+
+    }
         
     static func load() -> [EmoRecord]
     {
