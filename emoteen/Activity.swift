@@ -10,23 +10,21 @@ import SwiftUI
 import CalendarKit
 import SwiftyJSON
 
-struct ActivityView: View {
-    
+struct ActivityView: View
+{
     var records : [EmoRecord]
     
-    var body: some View {
-        
+    var body: some View
+    {
         NavigationView
+        {
+            VStack
             {
-                VStack {
-                    CalendarController(records: records)
-                }
-                .navigationBarTitle("Activity", displayMode: .inline)
-                }
-                
+                CalendarController(records: records)
+            }
+            .navigationBarTitle("Activity", displayMode: .inline)
+        }
         .font(.title)
-                
-
     }
 }
 
@@ -37,10 +35,7 @@ struct Activity_Previews: PreviewProvider {
     }
 }
 
-
-
-
-final class CalendarController: UIViewControllerRepresentable, EventDataSource {
+final class CalendarController: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = DayViewController
     
@@ -51,54 +46,78 @@ final class CalendarController: UIViewControllerRepresentable, EventDataSource {
         self.records = records
     }
     
-    func makeCoordinator() -> Coordinator {
+    func makeCoordinator() -> Coordinator
+    {
         Coordinator(self)
     }
     
-    func makeUIViewController(context: Context) -> DayViewController {
+    func makeUIViewController(context: Context) -> DayViewController
+    {
         let dayViewController = DayViewController()
-        dayViewController.dataSource = self
         return dayViewController
     }
     
-    func eventsForDate(_ date: Date)  -> [EventDescriptor] {
-        return getMeditationDates() + getJournalDates()
-    }
-        
-    func updateUIViewController(_ uiViewController: DayViewController, context: Context) {
-        
+    
+    func updateUIViewController(_ uiViewController: DayViewController, context: Context)
+    {
+        uiViewController.dataSource = context.coordinator
+        uiViewController.delegate = context.coordinator
     }
     
-    func getMeditationDates() -> [EventDescriptor] {
+    class Coordinator: NSObject, EventDataSource, DayViewDelegate
+    {
+        func dayViewDidSelectEventView(_ eventView: EventView) {
+            
+        }
         
-        var events = [Event]()
+        func dayViewDidLongPressEventView(_ eventView: EventView) {
+            
+        }
         
-        let event = Event()
+        func dayView(dayView: DayView, didTapTimelineAt date: Date) {
+            
+        }
         
-        events.append(event)
+        func dayView(dayView: DayView, didLongPressTimelineAt date: Date) {
+            
+        }
         
-        return events
-    }
-
-    func getJournalDates() -> [EventDescriptor] {
+        func dayViewDidBeginDragging(dayView: DayView) {
+            
+        }
         
-        var events = [Event]()
+        func dayView(dayView: DayView, willMoveTo date: Date) {
+            
+        }
         
-        let event = Event()
+        func dayView(dayView: DayView, didMoveTo date: Date) {
+            
+        }
         
-        events.append(event)
+        func dayView(dayView: DayView, didUpdate event: EventDescriptor) {
+            
+        }
         
-        return events
-    }
-
-    
-    class Coordinator: NSObject {
         var parent: CalendarController
         
         init(_ calendarController: CalendarController) {
             self.parent = calendarController
         }
         
-        
+        func eventsForDate(_ date: Date)  -> [EventDescriptor]
+           {
+               var events = [Event]()
+               
+                for record : EmoRecord in parent.records
+                {
+                   let event = Event()
+                   event.endDate = record.end
+                   event.startDate = record.start
+                   event.text = record.title + "\r\n" + record.type
+                   events.append(event)
+               }
+               
+               return  events
+           }
     }
 }
