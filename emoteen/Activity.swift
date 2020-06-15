@@ -67,8 +67,8 @@ final class CalendarController: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: DayViewController, context: Context)
     {
-        //uiViewController.dataSource = context.coordinator
-        //uiViewController.delegate = context.coordinator
+        uiViewController.dataSource = context.coordinator
+        uiViewController.delegate = context.coordinator
     }
     
     class Coordinator: NSObject, EventDataSource, DayViewDelegate
@@ -115,7 +115,7 @@ final class CalendarController: UIViewControllerRepresentable {
            {
                var events = [Event]()
                
-                for record : EmoRecord in parent.records
+            for record : EmoRecord in EmoRecord.load()
                 {
                    let event = Event()
                    event.endDate = record.end
