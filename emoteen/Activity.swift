@@ -39,6 +39,7 @@ final class CalendarController: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = DayViewController
     
+    let dayViewController = DayViewController()
     public var records : [EmoRecord] = []
     
     init(records: [EmoRecord])
@@ -48,20 +49,26 @@ final class CalendarController: UIViewControllerRepresentable {
     
     func makeCoordinator() -> Coordinator
     {
-        Coordinator(self)
+        
+        let ctx = Coordinator(self)
+        
+        dayViewController.dataSource = ctx
+        dayViewController.delegate = ctx
+        
+        return ctx
     }
     
     func makeUIViewController(context: Context) -> DayViewController
     {
-        let dayViewController = DayViewController()
+    
         return dayViewController
     }
     
     
     func updateUIViewController(_ uiViewController: DayViewController, context: Context)
     {
-        uiViewController.dataSource = context.coordinator
-        uiViewController.delegate = context.coordinator
+        //uiViewController.dataSource = context.coordinator
+        //uiViewController.delegate = context.coordinator
     }
     
     class Coordinator: NSObject, EventDataSource, DayViewDelegate
@@ -113,6 +120,7 @@ final class CalendarController: UIViewControllerRepresentable {
                    let event = Event()
                    event.endDate = record.end
                    event.startDate = record.start
+                   event.isAllDay = true
                    event.text = record.title + "\r\n" + record.type
                    events.append(event)
                }

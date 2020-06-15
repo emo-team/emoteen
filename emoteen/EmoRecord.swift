@@ -24,7 +24,7 @@ extension Date
     static var emoFormat : String
     {
         get {
-            return "yyyy.MM.dd'@'HH.mm"
+            return "yyyy-MM-dd'T'HH:mm:ss"
         }
     }
 }
