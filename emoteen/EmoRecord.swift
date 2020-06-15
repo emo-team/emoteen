@@ -66,17 +66,15 @@ public class EmoRecord : Codable
         
     }
     
-    public init(_ title : String, _ type : String, _ body : String)
+    public init(_ title : String, _ type : String, _ body : String, _ start : Date, _ end : Date)
     {
         self.title = title
         self.type = type
         self.body = body
+        self.end = end
+        self.start = start
     }
-    
-    var description : String {
-        return "\(title)\r\n\(start)\r\n\(end)"
-    }
-    
+        
     static var containerUrl: URL?
     {
           return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
@@ -84,8 +82,6 @@ public class EmoRecord : Codable
       
     func save()
     {
-        self.end = Date()
-        
         if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
               do {
                   try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
@@ -98,7 +94,7 @@ public class EmoRecord : Codable
         {
             let file = Self.containerUrl!.appendingPathComponent("\(self.start.emoDate)" + ".emo")
             
-            let json = JSON(self)
+            let json = JSON(self.toJSON())
             
             try json.rawString()!.write(to: file, atomically: true, encoding: .utf8)
         
@@ -106,6 +102,18 @@ public class EmoRecord : Codable
             
         }
 
+    }
+    
+    func toJSON() -> JSON
+    {
+        var json = JSON(parseJSON: "{}")
+        json["title"].string = self.title
+        json["type"].string = self.type
+        json["start"].string = self.start.emoDate
+        json["end"].string = self.end.emoDate
+        json["body"].string = self.body
+
+        return json
     }
         
     static func load() -> [EmoRecord]

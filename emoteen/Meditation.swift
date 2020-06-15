@@ -11,26 +11,32 @@ import VideoPlayer
 
 class Meditation :  Identifiable, ObservableObject 
 {
-    @Published var Title: String = ""
-    @Published var Description: String = ""
-    @Published var ContentUrl: String = ""
-    @Published var ThumbnailUrl: String = ""
+    @Published var title: String = ""
+    @Published var contentUrl: String = ""
+    @Published var thumbnailUrl: String = ""
     
     var ID: UUID = UUID()
-    var Started = Date()
-    var Ended = Date()
+    var created : Date? = nil
     
     init(_ title: String, _ thumbnailUrl: String)
     {
-        self.Title = title
-        self.ThumbnailUrl = thumbnailUrl
+        self.title = title
+        self.thumbnailUrl = thumbnailUrl
     }
     
     init(_ title: String, _ thumbnailUrl: String, _ contentUrl: String)
     {
-        self.Title = title
-        self.ThumbnailUrl = thumbnailUrl
-        self.ContentUrl = contentUrl
+        self.title = title
+        self.thumbnailUrl = thumbnailUrl
+        self.contentUrl = contentUrl
+    }
+    
+    func save()
+    {
+        let record = EmoRecord(self.title, "Meditation", self.contentUrl, self.created!, Date())
+        
+        record.save()
+
     }
     
     static func load() -> [Meditation]
@@ -42,33 +48,8 @@ class Meditation :  Identifiable, ObservableObject
                 Meditation("Restless", "moon.zzz", "http://media.zendo.tools/emoteen/restless.m4v"),
                 Meditation("About", "person", "http://media.zendo.tools/emoteen/about.m4v")]
     }
-    
-    var description : String {
-        return "\(Title)\r\n\(Started)\r\n\(Ended)"
-    }
-    
-    static var containerUrl: URL?
-    {
-          return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-    }
-      
-    func save()
-    {
-        self.Ended = Date()
-        
-        if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
-              do {
-                  try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-              }
-              catch {
-                  print(error.localizedDescription)
-              }
-          }
-          
-        let file = Self.containerUrl!.appendingPathComponent("\(self.Started.emoDate)" + ".emo")
-          
-        try! self.description.write(to: file, atomically: true, encoding: .utf8)
-    }
+     
+
 }
 
 struct MeditationView : View
@@ -77,8 +58,8 @@ struct MeditationView : View
     
     var body: some View {
         VStack {
-            Image(systemName: meditation.ThumbnailUrl).resizable().scaledToFit().frame(width: 166, height: 166)
-            Text(meditation.Title).font(.largeTitle)
+            Image(systemName: meditation.thumbnailUrl).resizable().scaledToFit().frame(width: 166, height: 166)
+            Text(meditation.title).font(.largeTitle)
         }
     }
     
@@ -91,7 +72,7 @@ struct MeditationDetailView : View {
     
     func getUrl() -> URL
     {
-        return URL(string: meditation.ContentUrl)!
+        return URL(string: meditation.contentUrl)!
     }
     
     var body: some View {
@@ -111,6 +92,8 @@ struct MeditationDetailView : View {
             }.onDisappear() {
                 self.play.toggle()
                 self.save()
+            }.onAppear() {
+                self.meditation.created = Date()
             }
             Button(self.play ? "Pause" : "Play") {
                 self.play.toggle()
