@@ -1,4 +1,4 @@
-    # emoteen: teens meditate on emotive states
+    # emoteen: help teens meditate on their emotive state
 
     ## ios app
 
