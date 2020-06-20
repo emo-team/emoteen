@@ -9,95 +9,52 @@
 import SwiftUI
 import UIKit
 
-
-
 class Journal : Identifiable, ObservableObject, Hashable, Comparable
 {
-
-    @Published var Title: String = ""
-    @Published var Body: String = ""
     var ID: UUID = UUID()
-    var Created = Date()
+    var Record : EmoRecord
 
     static func < (lhs: Journal, rhs: Journal) -> Bool {
-        return lhs.Title < rhs.Title
+        return lhs.Record.Title < rhs.Record.Title
     }
     
     static func == (lhs: Journal, rhs: Journal) -> Bool {
-        return lhs.Title == rhs.Title
+        return lhs.Record.Title == rhs.Record.Title
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.Title)
+        hasher.combine(Record.Title)
     }
     
-    
-    init(_ title: String, _ body: String )
+    init(_ record : EmoRecord)
     {
-        self.Title = title
-        self.Body = body
+        self.Record = record
     }
     
-    init(_ filename: String)
+    init()
     {
-        self.Title = filename
-        
-        let file = Self.containerUrl!.appendingPathComponent(filename)
-        
-        let data = FileManager.default.contents(atPath: file.path)
-        
-        let info = try! FileManager.default.attributesOfFileSystem(forPath: file.path)
-        
-        //self.Created = info[.creationDate] as! Date
-        
-        self.Body = String(data: data!, encoding: .utf8) ?? ""
-        
-    }
-    
-    var description : String {
-        return "\(Title)\r\n\(Body)"
-    }
-    
-    static var containerUrl: URL?
-    {
-        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
+        self.Record = EmoRecord(type: EmoType.Journal)
     }
     
     func save()
     {
-        if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
-            do {
-                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-            }
-            catch {
-                print(error.localizedDescription)
-            }
-        }
-        
-        let file = Self.containerUrl!.appendingPathComponent("\(self.Title)")
-        
-        print(self.description)
-        
-        try! self.Body.write(to: file, atomically: true, encoding: .utf8)
+        self.Record.save()
     }
     
     static func load() -> [Journal]
     {
         var journals = [Journal]()
         
-        if let url = Self.containerUrl
+        let records = EmoRecord.load()
+        
+        for record in records
         {
-                let files = try! FileManager.default.contentsOfDirectory(atPath: url.path)
-            
-                for file in files
-                {
-                    if(file.contains(".emo") && !file.starts(with: "."))
-                    {
-                        journals.append(Journal(file))
-                    }
-                }
+            if(record.EmoType.contains("journal"))
+            {
+                journals.append(Journal(record))
+            }
         }
-
+        
         if journals.count == 0
         {
             let Title = "Welcome.emo"
@@ -112,8 +69,8 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
 
                    join us :): or not.
                    """
-                   
-            let journal = Journal(Title, Body)
+            
+            let journal = Journal()
             
             journals.append(journal)
             
@@ -131,30 +88,29 @@ struct JournalNavigationView: View
     var body: some View
     {
         NavigationView
-            {
-                List(journals, id:\.self) {
-                    
+        {
+                List(journals, id:\.self)
+                {
                     journal in
                     
                     NavigationLink(destination: JournalView(journal))
                     {
-                        Text(journal.Title)
+                        Text(journal.Record.Title)
                     }
                 }
                 .navigationBarTitle("Journals", displayMode: .inline)
                 .navigationBarItems(trailing:
-                    NavigationLink(destination: JournalView(Journal(Date().emoDate + ".emo","")))
+                    NavigationLink(destination: JournalView(Journal()))
                     {
                         Image(systemName: "square.and.pencil")
-                })
-                .onAppear(perform: {
+                    })
+                .onAppear(perform:
+                {
                     self.journals = Journal.load()
                 })
         }
         .font(.title)
     }
-    
-
 }
 
 struct JournalView : View
@@ -170,12 +126,12 @@ struct JournalView : View
     {
         VStack<TextView>
         {
-            TextView(text: $journal.Body)
+            TextView(text: $journal.Record.Body)
 
         }.onDisappear()
         {
             self.journal.save()
-        }.navigationBarTitle(journal.Title).onTapGesture(perform: {
+        }.navigationBarTitle(journal.Record.Title).onTapGesture(perform: {
         
         })
         
@@ -184,7 +140,6 @@ struct JournalView : View
 
 struct TextView: UIViewRepresentable
 {
-    
     @Binding var text: String
 
     func makeUIView(context: Context) -> UITextView {
@@ -221,21 +176,3 @@ struct TextView: UIViewRepresentable
     }
 }
 
-struct Journal_Previews: PreviewProvider {
-    
-    static var body = """
-    # emoteen
-    teens meditate on emotive states
-
-    ## ios app
-    ### mediations: ig stories / snaps of useful meditations. by teens, for teens, for free.
-    ### journals: your stories. private to you. or not.
-    ### mirrors: your stats, your friends, your teachers,
-
-    join us :): or not.
-    """
-    
-    static var previews: some View {
-        JournalView(Journal("#emoteen", body))
-    }
-}

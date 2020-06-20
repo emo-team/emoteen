@@ -118,10 +118,10 @@ final class CalendarController: UIViewControllerRepresentable {
             for record : EmoRecord in EmoRecord.load()
                 {
                    let event = Event()
-                   event.endDate = record.end
-                   event.startDate = record.start
+                   event.endDate = record.End
+                   event.startDate = record.Start
                    event.isAllDay = true
-                   event.text = record.title + "\r\n" + record.type
+                    event.text = record.Title + "\r\n" + record.EmoType
                    events.append(event)
                }
                

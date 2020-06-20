@@ -29,50 +29,60 @@ extension Date
     }
 }
 
+public enum EmoType : String {
+    case Journal = "journal"
+    case Meditation = "meditation"
+}
+
 public class EmoRecord : Codable
 {
-    public var title : String = ""
-    public var type : String = ""
-    public var start : Date = Date()
-    public var end : Date = Date()
-    public var body : String = ""
+    public var Title : String = ""
+    public var EmoType : String = ""
+    public var Start : Date = Date()
+    public var End : Date = Date()
+    public var Body : String = ""
+    
+    public init(type: EmoType)
+    {
+        self.EmoType = type.rawValue
+    }
     
     public init(_ json: JSON)  {
         
         if let title = json["title"].string
         {
-            self.title = title
+            self.Title = title
         }
         
         if let type = json["type"].string
         {
-            self.type = type
+            self.EmoType = type
         }
         
         if let start = json["start"].string
         {
-            self.start = Date(dateString: start, format: Date.emoFormat)
+            self.Start = Date(dateString: start, format: Date.emoFormat)
         }
         
         if let end = json["end"].string
         {
-            self.end = Date(dateString: end, format: Date.emoFormat)
+            self.End = Date(dateString: end, format: Date.emoFormat)
         }
         
         if let body = json["body"].string
         {
-            self.body = body
+            self.Body = body
         }
         
     }
     
     public init(_ title : String, _ type : String, _ body : String, _ start : Date, _ end : Date)
     {
-        self.title = title
-        self.type = type
-        self.body = body
-        self.end = end
-        self.start = start
+        self.Title = title
+        self.EmoType = type
+        self.Body = body
+        self.End = end
+        self.Start = start
     }
         
     static var containerUrl: URL?
@@ -92,7 +102,7 @@ public class EmoRecord : Codable
           }
         do
         {
-            let file = Self.containerUrl!.appendingPathComponent("\(self.start.emoDate)" + ".emo")
+            let file = Self.containerUrl!.appendingPathComponent("\(self.Start.emoDate)" + ".emo")
             
             let json = JSON(self.toJSON())
             
@@ -107,11 +117,11 @@ public class EmoRecord : Codable
     func toJSON() -> JSON
     {
         var json = JSON(parseJSON: "{}")
-        json["title"].string = self.title
-        json["type"].string = self.type
-        json["start"].string = self.start.emoDate
-        json["end"].string = self.end.emoDate
-        json["body"].string = self.body
+        json["title"].string = self.Title
+        json["type"].string = self.EmoType
+        json["start"].string = self.Start.emoDate
+        json["end"].string = self.End.emoDate
+        json["body"].string = self.Body
 
         return json
     }
