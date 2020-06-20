@@ -49,18 +49,16 @@ final class CalendarController: UIViewControllerRepresentable {
     
     func makeCoordinator() -> Coordinator
     {
-        
         let ctx = Coordinator(self)
-        
-        dayViewController.dataSource = ctx
-        dayViewController.delegate = ctx
         
         return ctx
     }
     
     func makeUIViewController(context: Context) -> DayViewController
     {
-    
+        dayViewController.dataSource = context.coordinator
+        dayViewController.delegate = context.coordinator
+        
         return dayViewController
     }
     
@@ -69,6 +67,7 @@ final class CalendarController: UIViewControllerRepresentable {
     {
         uiViewController.dataSource = context.coordinator
         uiViewController.delegate = context.coordinator
+        dayViewController.dayView.reloadData()
     }
     
     class Coordinator: NSObject, EventDataSource, DayViewDelegate
@@ -109,23 +108,30 @@ final class CalendarController: UIViewControllerRepresentable {
         
         init(_ calendarController: CalendarController) {
             self.parent = calendarController
+            
+        }
+        
+        func move()
+        {
+    
         }
         
         func eventsForDate(_ date: Date)  -> [EventDescriptor]
-           {
-               var events = [Event]()
+        {
+            var events = [Event]()
                
             for record : EmoRecord in EmoRecord.load()
-                {
-                   let event = Event()
-                   event.endDate = record.End
-                   event.startDate = record.Start
-                   event.isAllDay = true
-                    event.text = record.Title + "\r\n" + record.EmoType
-                   events.append(event)
-               }
-               
-               return  events
-           }
+            {
+                    let event = Event()
+                    event.startDate = record.Start
+                    let date = record.Start + 30 * 60
+                    event.endDate = date
+                    event.text = record.Title + "\r\n" + record.EmoType + "\r\n" + record.Body
+                    events.append(event)
+            }
+            
+            return events
+        
+        }
     }
 }

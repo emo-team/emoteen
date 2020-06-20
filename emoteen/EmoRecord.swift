@@ -114,7 +114,9 @@ public class EmoRecord : Codable
             
             try json.rawString()!.write(to: file, atomically: true, encoding: .utf8)
         
-        } catch {
+        }
+        catch
+        {
             print(error)
         }
 
