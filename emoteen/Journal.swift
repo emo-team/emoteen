@@ -44,6 +44,11 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
         self.Record.save()
     }
     
+    func delete()
+    {
+        self.Record.delete()
+    }
+    
     static func load() -> [Journal]
     {
         var journals = [Journal]()
@@ -66,9 +71,9 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
                    # emoteen: teens meditate on emotive states
 
                    ## ios app
-                   ### mediations: ig stories / snaps of useful meditations. by teens, for teens, for free.
-                   ### journals: your stories. private to you. or not.
-                   ### mirrors: your stats, your friends, your teachers,
+                   ### mediation: ig stories / snaps of useful meditations. by teens, for teens, for free.
+                   ### journal: your stories. private to you. or not.
+                   ### activity: your stats, over time.
 
                    join us :): or not.
                    """
@@ -92,16 +97,20 @@ struct JournalNavigationView: View
     {
         NavigationView
         {
-                List(journals, id:\.self)
+                List
                 {
-                    journal in
-                    
-                    NavigationLink(destination: JournalView(journal))
+                    ForEach(journals, id:\.self)
                     {
-                        Text(journal.Record.Title)
+                        journal in
+                    
+                        NavigationLink(destination: JournalView(journal))
+                        {
+                            Text(journal.Record.Title)
+                        }
                     }
+                    .onDelete(perform: delete)
                 }
-                .navigationBarTitle("Journals", displayMode: .inline)
+                .navigationBarTitle("Journal", displayMode: .inline)
                 .navigationBarItems(trailing:
                     NavigationLink(destination: JournalView(Journal()))
                     {
@@ -111,8 +120,19 @@ struct JournalNavigationView: View
                 {
                     self.journals = Journal.load()
                 })
+                
+    
         }
         .font(.title)
+    }
+    
+    func delete(at offsets: IndexSet)
+    {
+        let journal = journals[offsets.first!]
+        
+        journal.delete()
+        
+        journals.remove(atOffsets: offsets)
     }
 }
 
@@ -134,10 +154,8 @@ struct JournalView : View
         }.onDisappear()
         {
             self.journal.save()
-        }.navigationBarTitle(journal.Record.Title).onTapGesture(perform: {
-        
-        })
-        
+        }
+        .navigationBarTitle(journal.Record.Title)
     }
 }
 

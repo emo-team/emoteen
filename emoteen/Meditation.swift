@@ -77,7 +77,8 @@ struct MeditationDetailView : View {
     
     var body: some View {
         
-        VStack {
+        VStack
+        {
             VideoPlayer(url: self.getUrl(), play: $play).autoReplay(true).onStateChanged { state in
                 switch state {
                 case .loading:
@@ -104,26 +105,6 @@ struct MeditationDetailView : View {
     
     func save()
     {
-        if FileManager.default.ubiquityIdentityToken != nil
-        {
-            print("save the meditation here.")
-            
-            meditation.save()
-        }
-        
-    }
-    
-}
-
-struct Meditation_Preview: PreviewProvider {
-    static var previews: some View {
-        MeditationView(meditation: Meditation("Anger", "hand.raised.fill", "http://d2vg5ncbjf4s8e.cloudfront.net/hrv101.1.mp4"))
+        meditation.save()
     }
 }
-
-struct MeditationDetail_Preview: PreviewProvider {
-    static var previews: some View {
-        MeditationDetailView(meditation: Meditation("Anger", "hand.raised.fill", "http://d2vg5ncbjf4s8e.cloudfront.net/hrv101.1.mp4"))
-    }
-}
-

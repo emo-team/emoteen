@@ -32,7 +32,7 @@ struct ContentView: View {
                     }
                     
                 }
-                .navigationBarTitle("Meditations", displayMode: .inline)
+                .navigationBarTitle("Meditation", displayMode: .inline)
             }
             .tabItem {
                 VStack {

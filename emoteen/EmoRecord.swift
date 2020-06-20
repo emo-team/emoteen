@@ -78,7 +78,11 @@ public class EmoRecord : Codable
         
     }
     
-    public init(_ title : String, _ type : String, _ body : String, _ start : Date, _ end : Date)
+    public init(_ title : String,
+                _ type : String,
+                _ body : String,
+                _ start : Date,
+                _ end : Date)
     {
         self.Title = title
         self.EmoType = type
@@ -111,9 +115,23 @@ public class EmoRecord : Codable
             try json.rawString()!.write(to: file, atomically: true, encoding: .utf8)
         
         } catch {
-            
+            print(error)
         }
 
+    }
+    
+    func delete()
+    {
+        do
+        {
+            let file = Self.containerUrl!.appendingPathComponent("\(self.Start.emoDate)" + ".emo")
+            
+            try FileManager.default.removeItem(at: file)
+        }
+        catch
+        {
+            print(error)
+        }
     }
     
     func toJSON() -> JSON
@@ -153,7 +171,7 @@ public class EmoRecord : Codable
                     }
                     catch
                     {
-                        print("something went wrong")
+                        print(error.localizedDescription)
                     }
                 }
             }
