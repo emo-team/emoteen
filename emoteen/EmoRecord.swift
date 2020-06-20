@@ -38,13 +38,15 @@ public class EmoRecord : Codable
 {
     public var Title : String = ""
     public var EmoType : String = ""
+    public var Body : String = ""
     public var Start : Date = Date()
     public var End : Date = Date()
-    public var Body : String = ""
     
-    public init(type: EmoType)
+    public init(type: EmoType, title: String, body: String)
     {
         self.EmoType = type.rawValue
+        self.Title = title
+        self.Body = body
     }
     
     public init(_ json: JSON)  {

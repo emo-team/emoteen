@@ -14,15 +14,18 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
     var ID: UUID = UUID()
     var Record : EmoRecord
 
-    static func < (lhs: Journal, rhs: Journal) -> Bool {
+    static func < (lhs: Journal, rhs: Journal) -> Bool
+    {
         return lhs.Record.Title < rhs.Record.Title
     }
     
-    static func == (lhs: Journal, rhs: Journal) -> Bool {
+    static func == (lhs: Journal, rhs: Journal) -> Bool
+    {
         return lhs.Record.Title == rhs.Record.Title
     }
     
-    func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher)
+    {
         hasher.combine(Record.Title)
     }
     
@@ -33,7 +36,7 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
     
     init()
     {
-        self.Record = EmoRecord(type: EmoType.Journal)
+        self.Record = EmoRecord(type: EmoType.Journal, title: Date().emoDate, body: "")
     }
     
     func save()
@@ -70,7 +73,7 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
                    join us :): or not.
                    """
             
-            let journal = Journal()
+            let journal = Journal(EmoRecord(type: EmoType.Journal, title: Title, body: Body))
             
             journals.append(journal)
             
