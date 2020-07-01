@@ -25,11 +25,9 @@ struct ContentView: View {
                     
                     NavigationLink(destination: MeditationDetailView(meditation: meditation))
                     {
-                        VStack {
-                            MeditationView(meditation: meditation)
-                            Spacer()
-                        }
-                    }
+                        MeditationView(meditation: meditation)
+                            
+                    }.buttonStyle(PlainButtonStyle())
                     
                 }
                 .navigationBarTitle("Meditation", displayMode: .inline)

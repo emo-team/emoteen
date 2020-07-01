@@ -61,11 +61,10 @@ struct MeditationView : View
   
         VStack
         {
-            Image(meditation.thumbnailUrl).resizable().fixedSize(horizontal: true, vertical: false)
+            Image(meditation.thumbnailUrl).renderingMode(.original)
             Text(meditation.title).font(.largeTitle)
-            Spacer(minLength: 66)
-        }.colorInvert()
-        
+            Spacer(minLength: 33)
+        }
     }
     
 }
@@ -81,7 +80,8 @@ struct MeditationDetailView : View {
     }
     
     var body: some View {
-        
+       
+        ZStack {
         VStack
         {
             VideoPlayer(url: self.getUrl(), play: $play).autoReplay(true).onStateChanged { state in
@@ -102,16 +102,21 @@ struct MeditationDetailView : View {
                 self.meditation.created = Date()
             }.scaledToFill()
             
-            Button(action: {
-                self.play.toggle()
-                
-            }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
-            }
+            
+        }
+        
+        Button(action: {
+            self.play.toggle()
+            
+        }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
+            .padding(.leading, 20)
+            .padding(.trailing, 20)
+        }
+    
         }
         
     }
+    
     
     func save()
     {

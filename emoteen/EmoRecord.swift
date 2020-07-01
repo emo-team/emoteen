@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import CalendarKit
+import SwiftUI
 
 extension Date
 {
@@ -27,6 +28,17 @@ extension Date
             return "yyyy-MM-dd'T'HH:mm:ss"
         }
     }
+    
+    var emoDateTitle : String
+    {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            return formatter.string(from: self)
+        }
+    }
+    
+    
 }
 
 public enum EmoType : String {

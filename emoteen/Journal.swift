@@ -13,7 +13,7 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
 {
     var ID: UUID = UUID()
     var Record : EmoRecord
-
+    
     static func < (lhs: Journal, rhs: Journal) -> Bool
     {
         return lhs.Record.Title < rhs.Record.Title
@@ -36,7 +36,7 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
     
     init()
     {
-        self.Record = EmoRecord(type: EmoType.Journal, title: Date().emoDate, body: "")
+        self.Record = EmoRecord(type: EmoType.Journal, title: Date().emoDateTitle, body: "")
     }
     
     func save()
@@ -96,32 +96,31 @@ struct JournalNavigationView: View
     var body: some View
     {
         NavigationView
-        {
+            {
                 List
-                {
-                    ForEach(journals, id:\.self)
                     {
-                        journal in
-                    
-                        NavigationLink(destination: JournalView(journal))
+                        ForEach(journals, id:\.self)
                         {
-                            Text(journal.Record.Title)
+                            journal in
+                            
+                            NavigationLink(destination: JournalView(journal))
+                            {
+                                Text(journal.Record.Title)
+                            }
                         }
-                    }
-                    .onDelete(perform: delete)
+                        .onDelete(perform: delete)
+                        
                 }
                 .navigationBarTitle("Journal", displayMode: .inline)
                 .navigationBarItems(trailing:
                     NavigationLink(destination: JournalView(Journal()))
                     {
-                        Image(systemName: "square.and.pencil")
-                    })
-                .onAppear(perform:
-                {
-                    self.journals = Journal.load()
+                        Image(systemName: "square.and.pencil").frame(width: 33, height: 33, alignment: .center)
                 })
                 
-    
+                
+        }.onAppear() {
+            self.journals = Journal.load()
         }
         .font(.title)
     }
@@ -149,11 +148,11 @@ struct JournalView : View
     {
         VStack<TextView>
         {
-            TextView(text: $journal.Record.Body)
-
+                TextView(text: $journal.Record.Body)
+                
         }.onDisappear()
         {
-            self.journal.save()
+                self.journal.save()
         }
         .navigationBarTitle(journal.Record.Title)
     }
@@ -162,20 +161,20 @@ struct JournalView : View
 struct TextView: UIViewRepresentable
 {
     @Binding var text: String
-
+    
     func makeUIView(context: Context) -> UITextView {
-           let view = UITextView()
-            view.isScrollEnabled = true
-            view.isEditable = true
-            view.isUserInteractionEnabled = true
-            view.contentInset = UIEdgeInsets(top: 5,
-                left: 10, bottom: 5, right: 5)
-            view.isHidden = false
-            view.delegate = context.coordinator
-            view.font = UIFont.systemFont(ofSize: 21, weight: UIFont.Weight.medium)
-            return view
+        let view = UITextView()
+        view.isScrollEnabled = true
+        view.isEditable = true
+        view.isUserInteractionEnabled = true
+        view.contentInset = UIEdgeInsets(top: 5,
+                                         left: 10, bottom: 5, right: 5)
+        view.isHidden = false
+        view.delegate = context.coordinator
+        view.font = UIFont.systemFont(ofSize: 21, weight: UIFont.Weight.medium)
+        return view
     }
-
+    
     func updateUIView(_ uiView: UITextView, context: Context) {
         uiView.text = text
     }
