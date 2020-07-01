@@ -45,11 +45,11 @@ class Meditation :  Identifiable, ObservableObject
         
         do {
             //try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: AVAudioSession.CategoryOptions.mixWithOthers)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.mixWithOthers, .allowAirPlay] )
             
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-                print(error)
+            print(error)
         }
         
         return [Meditation("Anger", "anger", "http://media.zendo.tools/emoteen/anger.m4v"),
@@ -83,10 +83,9 @@ struct MeditationView : View
 
 struct MeditationDetailView : View {
     
-    @ObservedObject var meditation: Meditation
     @State private var play: Bool = true
     @State private var time: CMTime = .zero
-
+    @ObservedObject var meditation: Meditation
     
     func getUrl() -> URL
     {
@@ -96,8 +95,7 @@ struct MeditationDetailView : View {
     var body: some View {
         
         ZStack {
-            VStack
-                {
+            VStack {
                     VideoPlayer(url: self.getUrl(), play: self.$play, time: self.$time)
                         .autoReplay(true)
                         .onPlayToEndTime {
@@ -106,35 +104,23 @@ struct MeditationDetailView : View {
                     .onReplay {
                         // Replay after playing to the end.
                     }
-                        
                     .onStateChanged { state in
                         switch state {
                         case .loading:
-                            
                             print("loading")
                         case .playing(let totalDuration):
-                            print(totalDuration)
+                            print("playing")
                         case .paused(let playProgress, let bufferProgress):
-                            
-                            print ("paused at \(playProgress)")
-                            print(playProgress)
+                            print("paused")
                         case .error(let error):
                             print(error.description)
                         }
                     }.onAppear() {
                         self.meditation.created = Date()
-                    }.scaledToFill()
-                    
-                    
+                    }
             }
             
-            Button(action: {
-                print(self.time)
-                self.play.toggle()
-                
-                print(self.time)
-                
-            }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
+            Button(action: { self.play.toggle() }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
                 .padding(.leading, 20)
                 .padding(.trailing, 20)
             }
@@ -143,9 +129,7 @@ struct MeditationDetailView : View {
             self.play = false
             self.save()
         }
-        
     }
-    
     
     func save()
     {
@@ -155,6 +139,6 @@ struct MeditationDetailView : View {
 
 struct Meditation_Previews: PreviewProvider {
     static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+        MeditationDetailView(meditation: Meditation("About", "about", "http://media.zendo.tools/emoteen/about.m4v"))
     }
 }
