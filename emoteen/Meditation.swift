@@ -32,8 +32,6 @@ class Meditation :  Identifiable, ObservableObject
         self.contentUrl = contentUrl
     }
     
-    
-    
     func save()
     {
         let record = EmoRecord(self.title, "Meditation", self.contentUrl, self.created!, Date())
@@ -44,6 +42,16 @@ class Meditation :  Identifiable, ObservableObject
     
     static func load() -> [Meditation]
     {
+        
+        do {
+            //try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: AVAudioSession.CategoryOptions.mixWithOthers)
+            
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+                print(error)
+        }
+        
         return [Meditation("Anger", "anger", "http://media.zendo.tools/emoteen/anger.m4v"),
                 Meditation("Stress", "stress", "http://media.zendo.tools/emoteen/stress.m4v"),
                 Meditation("Anxious", "anxious", "http://media.zendo.tools/emoteen/anxious.m4v"),
@@ -102,13 +110,6 @@ struct MeditationDetailView : View {
                     .onStateChanged { state in
                         switch state {
                         case .loading:
-                            
-                            do {
-                                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-                                try AVAudioSession.sharedInstance().setActive(true)
-                            } catch {
-                                
-                            }
                             
                             print("loading")
                         case .playing(let totalDuration):
