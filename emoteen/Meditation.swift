@@ -41,12 +41,12 @@ class Meditation :  Identifiable, ObservableObject
     
     static func load() -> [Meditation]
     {
-        return [Meditation("Anger", "hand.raised.fill", "http://media.zendo.tools/emoteen/anger.m4v"),
-                Meditation("Stress", "burn", "http://media.zendo.tools/emoteen/stress.m4v"),
-                Meditation("Anxious", "tornado", "http://media.zendo.tools/emoteen/anxious.m4v"),
-                Meditation("Blah", "tortoise", "http://media.zendo.tools/emoteen/blah.m4v"),
-                Meditation("Restless", "moon.zzz", "http://media.zendo.tools/emoteen/restless.m4v"),
-                Meditation("About", "person", "http://media.zendo.tools/emoteen/about.m4v")]
+        return [Meditation("Anger", "anger", "http://media.zendo.tools/emoteen/anger.m4v"),
+                Meditation("Stress", "stress", "http://media.zendo.tools/emoteen/stress.m4v"),
+                Meditation("Anxious", "anxious", "http://media.zendo.tools/emoteen/anxious.m4v"),
+                Meditation("Blah", "blah", "http://media.zendo.tools/emoteen/blah.m4v"),
+                Meditation("Sleepy", "sleepy", "http://media.zendo.tools/emoteen/sleepy.m4v"),
+                Meditation("About", "about", "http://media.zendo.tools/emoteen/about.m4v")]
     }
      
 
@@ -56,11 +56,16 @@ struct MeditationView : View
 {
     @ObservedObject var meditation: Meditation
     
-    var body: some View {
-        VStack {
-            Image(systemName: meditation.thumbnailUrl).resizable().scaledToFit().frame(width: 166, height: 166)
+    var body: some View
+    {
+  
+        VStack
+        {
+            Image(meditation.thumbnailUrl).resizable().fixedSize(horizontal: true, vertical: false)
             Text(meditation.title).font(.largeTitle)
-        }
+            Spacer(minLength: 66)
+        }.colorInvert()
+        
     }
     
 }
@@ -72,7 +77,7 @@ struct MeditationDetailView : View {
     
     func getUrl() -> URL
     {
-        return URL(string: meditation.contentUrl)!
+        return URL(string: meditation.contentUrl + "?now=" + Date().emoDate)!
     }
     
     var body: some View {
@@ -95,9 +100,14 @@ struct MeditationDetailView : View {
                 self.save()
             }.onAppear() {
                 self.meditation.created = Date()
-            }
-            Button(self.play ? "Pause" : "Play") {
+            }.scaledToFill()
+            
+            Button(action: {
                 self.play.toggle()
+                
+            }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
+                .padding(.leading, 20)
+                .padding(.trailing, 20)
             }
         }
         
@@ -106,5 +116,11 @@ struct MeditationDetailView : View {
     func save()
     {
         meditation.save()
+    }
+}
+
+struct Meditation_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }

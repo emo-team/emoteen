@@ -1,0 +1,16 @@
+PODS:
+  - HGRippleRadarView (0.1.2)
+
+DEPENDENCIES:
+  - HGRippleRadarView
+
+SPEC REPOS:
+  trunk:
+    - HGRippleRadarView
+
+SPEC CHECKSUMS:
+  HGRippleRadarView: 5379e27634c09222ebc836671c7425ad7b257cc4
+
+PODFILE CHECKSUM: 0a77a55a6e6326d89b28573dab782fafd37e8986
+
+COCOAPODS: 1.9.1
