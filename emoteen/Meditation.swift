@@ -8,6 +8,7 @@
 
 import SwiftUI
 import VideoPlayer
+import AVFoundation
 
 class Meditation :  Identifiable, ObservableObject 
 {
@@ -61,7 +62,8 @@ struct MeditationView : View
   
         VStack
         {
-            Image(meditation.thumbnailUrl).renderingMode(.original)
+            Spacer(minLength: 20)
+            Image(meditation.thumbnailUrl).renderingMode(.original).fixedSize()
             Text(meditation.title).font(.largeTitle)
             Spacer(minLength: 33)
         }
@@ -73,6 +75,7 @@ struct MeditationDetailView : View {
 
     @ObservedObject var meditation: Meditation
     @State private var play: Bool = true
+    @State private var time: CMTime = .zero
     
     func getUrl() -> URL
     {
@@ -84,13 +87,24 @@ struct MeditationDetailView : View {
         ZStack {
         VStack
         {
-            VideoPlayer(url: self.getUrl(), play: $play).autoReplay(true).onStateChanged { state in
+            VideoPlayer(url: self.getUrl(), play: $play, time: $time)
+            .autoReplay(true).onStateChanged { state in
                 switch state {
                 case .loading:
+                    
+                    do {
+                        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+                           try AVAudioSession.sharedInstance().setActive(true)
+                    } catch {
+                        
+                    }
+                    
                     print("loading")
                 case .playing(let totalDuration):
                     print(totalDuration)
                 case .paused(let playProgress, let bufferProgress):
+                    
+                    print ("paused at \(playProgress)")
                    print(playProgress)
                 case .error(let error):
                     print(error.description)
@@ -107,6 +121,11 @@ struct MeditationDetailView : View {
         
         Button(action: {
             self.play.toggle()
+            
+            if(self.play)
+            {
+                
+            }
             
         }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
             .padding(.leading, 20)
