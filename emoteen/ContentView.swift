@@ -40,7 +40,7 @@ struct ContentView: View {
             }
             .tag(0)
             
-            JournalNavigationView(journals: Journal.load())
+            JournalNavigationView()
             .tabItem {
                 VStack {
                     Image(systemName: "list.dash")

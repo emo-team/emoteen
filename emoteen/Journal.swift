@@ -42,6 +42,8 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
     func save()
     {
         self.Record.save()
+        
+        Journals.Instance.fire()
     }
     
     func delete()
@@ -89,9 +91,24 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
     
 }
 
+class Journals : ObservableObject
+{
+    func fire() {
+        self.objectWillChange.send()
+    }
+    
+    private static var _Instance = Journals()
+    
+    static var Instance : Journals
+    {
+        get { return _Instance}
+        
+    }
+}
+
 struct JournalNavigationView: View
 {
-    @State var journals : [Journal]
+    @State var journals : [Journal] = []
     
     var body: some View
     {
@@ -109,14 +126,17 @@ struct JournalNavigationView: View
                             }
                         }
                         .onDelete(perform: delete)
+
                         
-                }
+                }.onReceive(Journals.Instance.objectWillChange, perform: { _ in
+                    self.journals = Journal.load()
+                    })
                 .navigationBarTitle("Journal", displayMode: .inline)
                 .navigationBarItems(trailing:
                     NavigationLink(destination: JournalView(Journal()))
                     {
                         Image(systemName: "square.and.pencil").frame(width: 33, height: 33, alignment: .center)
-                })
+                    })
                 
                 
         }.onAppear() {
