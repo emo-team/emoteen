@@ -32,12 +32,14 @@ class Meditation :  Identifiable, ObservableObject
         self.contentUrl = contentUrl
     }
     
+    
+    
     func save()
     {
         let record = EmoRecord(self.title, "Meditation", self.contentUrl, self.created!, Date())
         
         record.save()
-
+        
     }
     
     static func load() -> [Meditation]
@@ -49,8 +51,8 @@ class Meditation :  Identifiable, ObservableObject
                 Meditation("Sleepy", "sleepy", "http://media.zendo.tools/emoteen/sleepy.m4v"),
                 Meditation("About", "about", "http://media.zendo.tools/emoteen/about.m4v")]
     }
-     
-
+    
+    
 }
 
 struct MeditationView : View
@@ -59,79 +61,86 @@ struct MeditationView : View
     
     var body: some View
     {
-  
+        
         VStack
-        {
-            Spacer(minLength: 20)
-            Image(meditation.thumbnailUrl).renderingMode(.original).fixedSize()
-            Text(meditation.title).font(.largeTitle)
-            Spacer(minLength: 33)
+            {
+                Spacer(minLength: 20)
+                Image(meditation.thumbnailUrl).renderingMode(.original).fixedSize()
+                Text(meditation.title).font(.largeTitle)
+                Spacer(minLength: 33)
         }
     }
     
 }
 
 struct MeditationDetailView : View {
-
+    
     @ObservedObject var meditation: Meditation
     @State private var play: Bool = true
     @State private var time: CMTime = .zero
+
     
     func getUrl() -> URL
     {
-        return URL(string: meditation.contentUrl + "?now=" + Date().emoDate)!
+        return URL(string: meditation.contentUrl)! // + "?now=" + Date().emoDate)!
     }
     
     var body: some View {
-       
-        ZStack {
-        VStack
-        {
-            VideoPlayer(url: self.getUrl(), play: $play, time: $time)
-            .autoReplay(true).onStateChanged { state in
-                switch state {
-                case .loading:
-                    
-                    do {
-                        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-                           try AVAudioSession.sharedInstance().setActive(true)
-                    } catch {
-                        
-                    }
-                    
-                    print("loading")
-                case .playing(let totalDuration):
-                    print(totalDuration)
-                case .paused(let playProgress, let bufferProgress):
-                    
-                    print ("paused at \(playProgress)")
-                   print(playProgress)
-                case .error(let error):
-                    print(error.description)
-                }
-            }.onDisappear() {
-                self.play.toggle()
-                self.save()
-            }.onAppear() {
-                self.meditation.created = Date()
-            }.scaledToFill()
-            
-            
-        }
         
-        Button(action: {
-            self.play.toggle()
-            
-            if(self.play)
-            {
-                
+        ZStack {
+            VStack
+                {
+                    VideoPlayer(url: self.getUrl(), play: self.$play, time: self.$time)
+                        .autoReplay(true)
+                        .onPlayToEndTime {
+                            // Play to the end time.
+                    }
+                    .onReplay {
+                        // Replay after playing to the end.
+                    }
+                        
+                    .onStateChanged { state in
+                        switch state {
+                        case .loading:
+                            
+                            do {
+                                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+                                try AVAudioSession.sharedInstance().setActive(true)
+                            } catch {
+                                
+                            }
+                            
+                            print("loading")
+                        case .playing(let totalDuration):
+                            print(totalDuration)
+                        case .paused(let playProgress, let bufferProgress):
+                            
+                            print ("paused at \(playProgress)")
+                            print(playProgress)
+                        case .error(let error):
+                            print(error.description)
+                        }
+                    }.onAppear() {
+                        self.meditation.created = Date()
+                    }.scaledToFill()
+                    
+                    
             }
             
-        }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
-            .padding(.leading, 20)
-            .padding(.trailing, 20)
-        }
-    
+            Button(action: {
+                print(self.time)
+                self.play.toggle()
+                
+                print(self.time)
+                
+            }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
+                .padding(.leading, 20)
+                .padding(.trailing, 20)
+            }
+            
+        }.onDisappear() {
+            self.play = false
+            self.save()
         }
         
     }
