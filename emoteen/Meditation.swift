@@ -96,28 +96,28 @@ struct MeditationDetailView : View {
         
         ZStack {
             VStack {
-                    VideoPlayer(url: self.getUrl(), play: self.$play, time: self.$time)
-                        .autoReplay(true)
-                        .onPlayToEndTime {
-                            // Play to the end time.
+                VideoPlayer(url: self.getUrl(), play: self.$play, time: self.$time)
+                    .autoReplay(true)
+                    .onPlayToEndTime {
+                        // Play to the end time.
+                }
+                .onReplay {
+                    // Replay after playing to the end.
+                }
+                .onStateChanged { state in
+                    switch state {
+                    case .loading:
+                        print("loading")
+                    case .playing(let totalDuration):
+                        print("playing")
+                    case .paused(let playProgress, let bufferProgress):
+                        print("paused")
+                    case .error(let error):
+                        print(error.description)
                     }
-                    .onReplay {
-                        // Replay after playing to the end.
-                    }
-                    .onStateChanged { state in
-                        switch state {
-                        case .loading:
-                            print("loading")
-                        case .playing(let totalDuration):
-                            print("playing")
-                        case .paused(let playProgress, let bufferProgress):
-                            print("paused")
-                        case .error(let error):
-                            print(error.description)
-                        }
-                    }.onAppear() {
-                        self.meditation.created = Date()
-                    }
+                }.onAppear() {
+                    self.meditation.created = Date()
+                }.frame(maxWidth: .infinity).edgesIgnoringSafeArea(.all)
             }
             
             Button(action: { self.play.toggle() }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)

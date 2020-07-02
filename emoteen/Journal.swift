@@ -122,6 +122,7 @@ struct JournalNavigationView: View
                             
                             NavigationLink(destination: JournalView(journal))
                             {
+                            
                                 Text(journal.Record.Title)
                             }
                         }
@@ -132,11 +133,13 @@ struct JournalNavigationView: View
                     self.journals = Journal.load()
                     })
                 .navigationBarTitle("Journal", displayMode: .inline)
-                .navigationBarItems(trailing:
+                .navigationBarItems(
+                    trailing:
                     NavigationLink(destination: JournalView(Journal()))
                     {
-                        Image(systemName: "square.and.pencil").frame(width: 33, height: 33, alignment: .center)
+                        Image(systemName: "square.and.pencil").imageScale(.large)
                     })
+                
                 
                 
         }.onAppear() {
@@ -174,7 +177,7 @@ struct JournalView : View
         {
                 self.journal.save()
         }
-        .navigationBarTitle(journal.Record.Title)
+        .navigationBarTitle (Text(journal.Record.Title))
     }
 }
 

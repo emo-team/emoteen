@@ -58,7 +58,7 @@ final class CalendarController: UIViewControllerRepresentable {
     {
         dayViewController.dataSource = context.coordinator
         dayViewController.delegate = context.coordinator
-        
+        dayViewController.dayView.autoScrollToFirstEvent = true
         return dayViewController
     }
     
@@ -67,6 +67,7 @@ final class CalendarController: UIViewControllerRepresentable {
     {
         uiViewController.dataSource = context.coordinator
         uiViewController.delegate = context.coordinator
+        dayViewController.dayView.autoScrollToFirstEvent = true
         dayViewController.dayView.reloadData()
     }
     
