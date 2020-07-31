@@ -83,7 +83,6 @@ class Journal : Identifiable, ObservableObject, Hashable, Comparable
             let journal = Journal(EmoRecord(type: EmoType.Journal, title: Title, body: Body))
             
             journals.append(journal)
-            
         }
         
         return journals.sorted(by: >)

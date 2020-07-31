@@ -110,7 +110,8 @@ public class EmoRecord : Codable
       
     func save()
     {
-        if let url = Self.containerUrl, !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+        if let url = Self.containerUrl,
+           !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
               do {
                   try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
               }
@@ -118,19 +119,28 @@ public class EmoRecord : Codable
                   print(error.localizedDescription)
               }
           }
-        do
+        
+        
+        if let url = Self.containerUrl
         {
-            let file = Self.containerUrl!.appendingPathComponent("\(self.Start.emoDate)" + ".emo")
+            let file = url.appendingPathComponent("\(self.Start.emoDate)" + ".emo")
             
             let json = JSON(self.toJSON())
             
-            try json.rawString()!.write(to: file, atomically: true, encoding: .utf8)
-        
+            do
+            {
+                try json.rawString()!.write(to: file, atomically: true, encoding: .utf8)
+            }
+            catch
+            {
+                print(error.localizedDescription)
+            }
         }
-        catch
+        else
         {
-            print(error)
+            print("the person doensn't have icloud setup")
         }
+        
 
     }
     
@@ -189,6 +199,8 @@ public class EmoRecord : Codable
                     }
                 }
             }
+            
+            try? FileManager.default.startDownloadingUbiquitousItem(at: url)
         }
         
         return records
