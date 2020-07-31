@@ -117,29 +117,29 @@ struct MeditationDetailView : View {
                         print("paused")
                     case .error(let error):
                         print(error.description)
+                    
                     }
                 }.onAppear() {
                     self.meditation.created = Date()
-                
+                    
                 }.frame(maxWidth: .infinity).edgesIgnoringSafeArea(.all)
             }
-            VStack {
+        VStack {
                 
             Button(action: { self.play.toggle() }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
                 .padding(.leading, 20)
-                .padding(.trailing, 20)
             }
-            
             
             let range = 0...self.duration
-          
-                Slider(value: self.$currentPosition, in: range) {
-                    _ in
-                    self.time =  CMTime(seconds: self.currentPosition, preferredTimescale: 600)
-                }
-            }
             
+            let binding = Binding(
+                get: { self.time.seconds },
+                set: { self.time = CMTime(seconds: $0 , preferredTimescale: 100)  }
+            )
             
+            Slider(value: binding, in: range).frame(width: 150, height: 100, alignment: .top)
+        
+        }
         }.onDisappear() {
             self.play = false
             self.save()
