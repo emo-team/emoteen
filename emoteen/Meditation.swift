@@ -9,6 +9,7 @@
 import SwiftUI
 import VideoPlayer
 import AVFoundation
+import QGrid
 
 class Meditation :  Identifiable, ObservableObject 
 {
@@ -37,21 +38,10 @@ class Meditation :  Identifiable, ObservableObject
         let record = EmoRecord(self.title, "Meditation", self.contentUrl, self.created!, Date())
         
         record.save()
-        
     }
     
     static func load() -> [Meditation]
     {
-        
-        do {
-            //try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.mixWithOthers, .allowAirPlay] )
-            
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print(error)
-        }
-        
         return [Meditation("Anger", "anger", "http://media.zendo.tools/emoteen/anger.m4v"),
                 Meditation("Stress", "stress", "http://media.zendo.tools/emoteen/stress.m4v"),
                 Meditation("Anxious", "anxious", "http://media.zendo.tools/emoteen/anxious.m4v"),
@@ -60,7 +50,65 @@ class Meditation :  Identifiable, ObservableObject
                 Meditation("About", "about", "http://media.zendo.tools/emoteen/about.m4v")]
     }
     
+}
+
+struct MeditationNavigationView: View
+{
+    let playMeditationBackgroundPlayer = Experience.playMeditationBackgroundPlayer()
     
+    var body: some View
+    {
+        NavigationView {
+            QGrid(Meditation.load(), columns: 2)
+            {
+                meditation in
+                
+                NavigationLink(destination: MeditationDetailView(meditation: meditation))
+                {
+                    MeditationView(meditation: meditation)
+                        
+                }.buttonStyle(PlainButtonStyle())
+                
+            }
+            .navigationBarTitle("Meditation", displayMode: .inline)
+        }.onAppear()
+        {
+            if let player : AVPlayer = self.playMeditationBackgroundPlayer
+            {
+                player.play()
+            }
+        }.onDisappear() {
+            if let player : AVPlayer = self.playMeditationBackgroundPlayer
+            {
+                player.pause()
+            }
+        }
+    }
+    
+}
+
+class Experience
+{
+    static var player : AVPlayer? = nil
+    
+    static func playMeditationBackgroundPlayer() -> AVPlayer?
+    {
+        if(Self.player == nil)
+        {
+            let urlString = "http://media.zendo.tools/emoteen/meditations.mov"
+         
+            guard let url = URL.init(string: urlString)
+                else {
+                    return nil
+            }
+            
+            let playerItem = AVPlayerItem.init(url: url)
+            Self.player = AVPlayer.init(playerItem: playerItem)
+            Self.player?.play()
+            
+        }
+        return player
+    }
 }
 
 struct MeditationView : View
@@ -127,6 +175,7 @@ struct MeditationDetailView : View {
         VStack {
                 
             Button(action: { self.play.toggle() }) { Image(systemName: self.play ? "pause" : "play").resizable().frame(width: 33, height: 33, alignment: .center)
+        
                 .padding(.leading, 20)
             }
             
@@ -137,7 +186,11 @@ struct MeditationDetailView : View {
                 set: { self.time = CMTime(seconds: $0 , preferredTimescale: 100)  }
             )
             
-            Slider(value: binding, in: range).frame(width: 150, height: 100, alignment: .top)
+            Slider(value: binding, in: range){
+                _ in
+                let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
+                selectionFeedbackGenerator.selectionChanged()
+            }.frame(width: 150, height: 100, alignment: .top)
         
         }
         }.onDisappear() {
