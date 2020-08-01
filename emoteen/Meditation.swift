@@ -179,14 +179,10 @@ struct MeditationDetailView : View {
                 .padding(.leading, 20)
             }
             
-            let range = 0...self.duration
-            
-            let binding = Binding(
+            Slider(value: Binding(
                 get: { self.time.seconds },
                 set: { self.time = CMTime(seconds: $0 , preferredTimescale: 100)  }
-            )
-            
-            Slider(value: binding, in: range){
+            ), in: 0...self.duration){
                 _ in
                 let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
                 selectionFeedbackGenerator.selectionChanged()
